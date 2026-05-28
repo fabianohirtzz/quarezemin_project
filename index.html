@@ -70,8 +70,8 @@
           <span class="nav-item__glow" aria-hidden="true"></span>
           <span class="nav-item__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-              <circle cx="12" cy="12" r="3"/>
+              <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/>
+              <circle cx="7.5" cy="7.5" r="1.25" fill="currentColor"/>
             </svg>
           </span>
           <span class="nav-item__label">Personalize sua Bebida</span>
@@ -306,6 +306,65 @@
         <h2 class="bebidas__title" id="bebidas-title">
           <em>Nossas</em> Bebidas
         </h2>
+
+        <div class="bebidas__filters" aria-label="Filtros">
+          <!-- Fluid dropdown — Linha -->
+          <div class="fluid-dd" data-filter="line">
+            <button class="fluid-dd__trigger" type="button" aria-haspopup="true" aria-expanded="false">
+              <span class="fluid-dd__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/>
+                  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/>
+                  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>
+                </svg>
+              </span>
+              <span class="fluid-dd__label">
+                <span class="fluid-dd__key">Linha</span>
+                <span class="fluid-dd__value" data-value="">Todas</span>
+              </span>
+              <span class="fluid-dd__caret" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </button>
+            <div class="fluid-dd__panel" role="menu">
+              <div class="fluid-dd__highlight" aria-hidden="true"></div>
+              <button class="fluid-dd__item" data-value=""           role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/></svg></span>Todas as linhas</button>
+              <button class="fluid-dd__item" data-value="margherita" role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg></span>Margherita</button>
+              <button class="fluid-dd__item" data-value="mesa"       role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"/><path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7"/><path d="m2.1 21.8 6.4-6.3"/></svg></span>Mesa</button>
+              <button class="fluid-dd__item" data-value="goethe"     role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 5.5c0 1.2-.5 2.4-1.5 3.5-2 2-5 2-7 0-2-2-2-5 0-7C14.6 1 16 .5 17.5.5c1 0 2 .3 3 1L22 5.5Z"/><path d="m15 9 6-6"/><circle cx="6" cy="14" r="3"/><circle cx="14" cy="14" r="3"/><circle cx="10" cy="20" r="3"/></svg></span>Goethe</button>
+              <button class="fluid-dd__item" data-value="fino"       role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></span>Fino</button>
+              <button class="fluid-dd__item" data-value="espumante"  role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/><path d="M5 3v4M3 5h4M19 17v4M17 19h4"/></svg></span>Espumante</button>
+              <button class="fluid-dd__item" data-value="suco"       role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11.7 4.6 8.4 8h8.7c2.3 0 3.4 2.8 1.8 4.4L17 14a1.7 1.7 0 0 0-.5 1.2v3.4c0 1.9-1.5 3.4-3.4 3.4h-2.2c-1.9 0-3.4-1.5-3.4-3.4v-3.4c0-.5-.2-.9-.5-1.2l-1.9-1.6C3.5 10.8 4.6 8 6.9 8H8L11.6 4.6Z"/></svg></span>Suco</button>
+            </div>
+          </div>
+
+          <!-- Fluid dropdown — Tipo -->
+          <div class="fluid-dd" data-filter="type">
+            <button class="fluid-dd__trigger" type="button" aria-haspopup="true" aria-expanded="false">
+              <span class="fluid-dd__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-3.5-2-8H9c-1.5 4.5-2 6-2 8a5 5 0 0 0 5 5Z"/>
+                </svg>
+              </span>
+              <span class="fluid-dd__label">
+                <span class="fluid-dd__key">Tipo</span>
+                <span class="fluid-dd__value" data-value="">Todos</span>
+              </span>
+              <span class="fluid-dd__caret" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </button>
+            <div class="fluid-dd__panel" role="menu">
+              <div class="fluid-dd__highlight" aria-hidden="true"></div>
+              <button class="fluid-dd__item" data-value=""          role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg></span>Todos os tipos</button>
+              <button class="fluid-dd__item" data-value="branco"    role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/><path d="M8 16h.01M8 20h.01M12 18h.01M12 22h.01M16 16h.01M16 20h.01"/></svg></span>Branco</button>
+              <button class="fluid-dd__item" data-value="rose"      role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg></span>Rosé</button>
+              <button class="fluid-dd__item" data-value="tinto"     role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-3.5-2-8H9c-1.5 4.5-2 6-2 8a5 5 0 0 0 5 5Z"/></svg></span>Tinto</button>
+              <button class="fluid-dd__item" data-value="espumante" role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg></span>Espumante</button>
+              <button class="fluid-dd__item" data-value="suco"      role="menuitem"><span class="fluid-dd__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11.7 4.6 8.4 8h8.7c2.3 0 3.4 2.8 1.8 4.4L17 14a1.7 1.7 0 0 0-.5 1.2v3.4c0 1.9-1.5 3.4-3.4 3.4h-2.2c-1.9 0-3.4-1.5-3.4-3.4v-3.4c0-.5-.2-.9-.5-1.2l-1.9-1.6C3.5 10.8 4.6 8 6.9 8H8L11.6 4.6Z"/></svg></span>Suco</button>
+            </div>
+          </div>
+        </div>
       </header>
 
       <div class="bebidas__stage" role="region" aria-roledescription="Carousel" aria-label="Catálogo de bebidas Quarezemin">
@@ -397,35 +456,6 @@
 
       <div class="bebidas__footer">
         <div class="bebidas__dots" id="bebidas-dots" role="tablist" aria-label="Selecionar bebida"></div>
-
-        <div class="bebidas__filters" aria-label="Filtros">
-          <label class="bebidas__filter">
-            <span>Linha</span>
-            <select id="filter-line">
-              <option value="">Todas</option>
-              <option value="margherita">Margherita</option>
-              <option value="mesa">Mesa</option>
-              <option value="goethe">Goethe</option>
-              <option value="fino">Fino</option>
-              <option value="espumante">Espumante</option>
-              <option value="suco">Suco</option>
-            </select>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </label>
-
-          <label class="bebidas__filter">
-            <span>Tipo</span>
-            <select id="filter-type">
-              <option value="">Todos</option>
-              <option value="branco">Branco</option>
-              <option value="rose">Rosé</option>
-              <option value="tinto">Tinto</option>
-              <option value="espumante">Espumante</option>
-              <option value="suco">Suco</option>
-            </select>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </label>
-        </div>
       </div>
     </section>
   </main>

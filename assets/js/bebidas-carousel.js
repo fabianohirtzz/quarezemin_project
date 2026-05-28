@@ -1,9 +1,11 @@
 /**
- * Nossas Bebidas — coverflow carousel.
+ * Nossas Bebidas — coverflow carousel + fluid dropdown filters.
  *
- * Inspired by privios.com/nuestros-vinos: bottles in a horizontal
- * lineup, the focal one centered and enlarged, side ones dimmed.
- * Arrow buttons + dots + filters + keyboard + touch swipe.
+ * - Carousel: arrow buttons step one product at a time (clicks
+ *   during transitions are queued so rapid clicks still advance
+ *   one-by-one without visually skipping).
+ * - Filters: custom fluid dropdown with sliding hover-highlight,
+ *   inspired by 21st.dev/r/koustubhayadiyala36/fluid-dropdown.
  */
 
 const PRODUCTS = [
@@ -82,6 +84,8 @@ const PRODUCTS = [
   },
 ];
 
+const TRANSITION_MS = 550; // matches CSS transform duration
+
 const track       = document.getElementById("bebidas-track");
 const dotsWrap    = document.getElementById("bebidas-dots");
 const info        = document.getElementById("bebidas-info");
@@ -91,19 +95,40 @@ const elDesc      = document.getElementById("bebidas-desc");
 const elMeta      = document.getElementById("bebidas-meta");
 const elPrize     = document.getElementById("bebidas-prize");
 const elPrizeLbl  = document.getElementById("bebidas-prize-label");
-const filterLine  = document.getElementById("filter-line");
-const filterType  = document.getElementById("filter-type");
 const prevBtn     = document.querySelector(".bebidas__arrow--prev");
 const nextBtn     = document.querySelector(".bebidas__arrow--next");
 
 if (track && dotsWrap && info) initCarousel();
+initFluidDropdowns();
 
+// — Carousel —
 function initCarousel() {
   const allCards = Array.from(track.querySelectorAll(".bebidas__card"));
-  let visible = allCards.slice();   // filtered subset
+  let visible = allCards.slice();
   let active  = 0;
 
-  // Build dots (one per card; rebuilt on filter change)
+  // — Click queueing: never advance more than one card per transition
+  //   frame. Extra clicks queue up and fire sequentially.
+  let isTransitioning = false;
+  let queuedDir = 0;
+  function advance(dir) {
+    if (isTransitioning) {
+      // collapse rapid taps into a single queued step
+      queuedDir = Math.sign(dir);
+      return;
+    }
+    setActive(active + dir);
+    isTransitioning = true;
+    setTimeout(() => {
+      isTransitioning = false;
+      if (queuedDir !== 0) {
+        const d = queuedDir;
+        queuedDir = 0;
+        advance(d);
+      }
+    }, TRANSITION_MS + 30);
+  }
+
   function buildDots() {
     dotsWrap.innerHTML = "";
     visible.forEach((_, i) => {
@@ -121,7 +146,6 @@ function initCarousel() {
     if (!visible.length) return;
     active = ((i % visible.length) + visible.length) % visible.length;
 
-    // Update card offsets
     allCards.forEach((card) => {
       const visIdx = visible.indexOf(card);
       if (visIdx === -1) {
@@ -136,13 +160,11 @@ function initCarousel() {
       card.classList.toggle("is-active", offset === 0);
     });
 
-    // Update dots
     dotsWrap.querySelectorAll(".bebidas__dot").forEach((d, idx) => {
       d.classList.toggle("is-active", idx === active);
       d.setAttribute("aria-selected", String(idx === active));
     });
 
-    // Update info panel with a quick crossfade
     info.classList.add("is-transitioning");
     setTimeout(() => {
       const card = visible[active];
@@ -159,19 +181,17 @@ function initCarousel() {
         elPrize.hidden = true;
       }
       info.classList.remove("is-transitioning");
-    }, 180);
+    }, 170);
   }
 
-  // — Navigation —
-  prevBtn?.addEventListener("click", () => setActive(active - 1));
-  nextBtn?.addEventListener("click", () => setActive(active + 1));
+  // — Wired interactions —
+  prevBtn?.addEventListener("click", () => advance(-1));
+  nextBtn?.addEventListener("click", () => advance( 1));
 
-  // Keyboard support when section is focused
   document.addEventListener("keydown", (e) => {
-    const inView = isSectionInView();
-    if (!inView) return;
-    if (e.key === "ArrowLeft")  { e.preventDefault(); setActive(active - 1); }
-    if (e.key === "ArrowRight") { e.preventDefault(); setActive(active + 1); }
+    if (!isSectionInView()) return;
+    if (e.key === "ArrowLeft")  { e.preventDefault(); advance(-1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); advance( 1); }
   });
 
   function isSectionInView() {
@@ -181,19 +201,17 @@ function initCarousel() {
     return r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4;
   }
 
-  // — Touch swipe —
+  // Touch swipe
   let touchStartX = null;
-  track.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-  }, { passive: true });
+  track.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
   track.addEventListener("touchend", (e) => {
     if (touchStartX == null) return;
     const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 40) setActive(active + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 40) advance(dx < 0 ? 1 : -1);
     touchStartX = null;
   });
 
-  // — Click on a non-focal card jumps to it —
+  // Click a side card to jump to it
   allCards.forEach((card) => {
     card.addEventListener("click", () => {
       const idx = visible.indexOf(card);
@@ -203,25 +221,91 @@ function initCarousel() {
     card.style.cursor = "pointer";
   });
 
-  // — Filters —
-  function applyFilters() {
-    const ln = filterLine?.value || "";
-    const tp = filterType?.value || "";
-    visible = allCards.filter((c) => {
-      const okLine = !ln || c.dataset.line === ln;
-      const okType = !tp || c.dataset.type === tp;
-      return okLine && okType;
-    });
+  // Filter via fluid dropdown CustomEvent
+  document.addEventListener("bebidas:filter", (e) => {
+    const { filter, value } = e.detail;
+    const ln = document.querySelector('.fluid-dd[data-filter="line"] .fluid-dd__value')?.dataset.value || "";
+    const tp = document.querySelector('.fluid-dd[data-filter="type"] .fluid-dd__value')?.dataset.value || "";
+    visible = allCards.filter((c) =>
+      (!ln || c.dataset.line === ln) &&
+      (!tp || c.dataset.type === tp)
+    );
     if (!visible.length) visible = allCards.slice();
     buildDots();
     setActive(0);
-  }
-  filterLine?.addEventListener("change", applyFilters);
-  filterType?.addEventListener("change", applyFilters);
+  });
 
-  // Initial render
+  // Initial render — first product as focal (left-to-right reading)
   buildDots();
-  // Land on Rosé Goethe (the premiado) as default focal product — slot index 4
-  const defaultIdx = 4;
-  setActive(Math.min(defaultIdx, visible.length - 1));
+  setActive(0);
+}
+
+// — Fluid Dropdown —
+function initFluidDropdowns() {
+  const dropdowns = document.querySelectorAll(".fluid-dd");
+  dropdowns.forEach((dd) => {
+    const trigger   = dd.querySelector(".fluid-dd__trigger");
+    const panel     = dd.querySelector(".fluid-dd__panel");
+    const highlight = dd.querySelector(".fluid-dd__highlight");
+    const items     = Array.from(dd.querySelectorAll(".fluid-dd__item"));
+    const valueEl   = dd.querySelector(".fluid-dd__value");
+    if (!trigger || !panel || !items.length) return;
+
+    const close = () => {
+      dd.classList.remove("is-open");
+      trigger.setAttribute("aria-expanded", "false");
+    };
+    const open = () => {
+      // Close any other open dropdown
+      document.querySelectorAll(".fluid-dd.is-open").forEach((d) => {
+        if (d !== dd) d.classList.remove("is-open");
+      });
+      dd.classList.add("is-open");
+      trigger.setAttribute("aria-expanded", "true");
+      // Position highlight on currently active item
+      const active = panel.querySelector(".fluid-dd__item.is-active") || items[0];
+      moveHighlight(active);
+    };
+
+    function moveHighlight(target) {
+      if (!target || !highlight) return;
+      const rect = target.getBoundingClientRect();
+      const parentRect = panel.getBoundingClientRect();
+      highlight.style.transform = `translateY(${rect.top - parentRect.top - 6}px)`;
+      highlight.style.height = `${rect.height}px`;
+    }
+
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dd.classList.contains("is-open") ? close() : open();
+    });
+
+    items.forEach((item) => {
+      item.addEventListener("mouseenter", () => moveHighlight(item));
+      item.addEventListener("focus",      () => moveHighlight(item));
+      item.addEventListener("click", () => {
+        items.forEach((b) => b.classList.remove("is-active"));
+        item.classList.add("is-active");
+        const value = item.dataset.value || "";
+        const label = item.textContent.trim();
+        valueEl.textContent = label.replace(/Todas as linhas|Todos os tipos/, value === "" ? (dd.dataset.filter === "line" ? "Todas" : "Todos") : label);
+        valueEl.dataset.value = value;
+        document.dispatchEvent(new CustomEvent("bebidas:filter", {
+          detail: { filter: dd.dataset.filter, value }
+        }));
+        close();
+      });
+    });
+
+    // Mark "All" as initial active
+    items[0].classList.add("is-active");
+
+    // Click outside / Escape to close
+    document.addEventListener("click", (e) => {
+      if (!dd.contains(e.target)) close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
+  });
 }
