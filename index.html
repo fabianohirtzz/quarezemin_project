@@ -17,9 +17,12 @@
   />
 
   <link rel="stylesheet" href="assets/css/main.css" />
+
+  <!-- Preload the video so scroll-scrub feels instant -->
+  <link rel="preload" as="video" href="videos/video_hero.mp4" type="video/mp4" />
 </head>
 <body class="is-loading">
-  <a class="skip-link" href="#hero">Pular para o conteúdo</a>
+  <a class="skip-link" href="#brand-intro">Pular para o conteúdo</a>
 
   <header class="site-header" data-reveal="header">
     <a class="brand" href="#hero" aria-label="Vinhos Quarezemin — início">
@@ -50,51 +53,128 @@
   </header>
 
   <main>
-    <section class="hero" id="hero" aria-labelledby="hero-title">
-      <div class="hero__atmosphere" aria-hidden="true">
-        <div class="hero__grain"></div>
-        <div class="hero__vignette"></div>
-        <div class="hero__glow"></div>
+    <!-- ============================================================
+         HERO · Scroll-driven cinematic video
+         ============================================================ -->
+    <section class="hero" id="hero" aria-label="Apresentação Quarezemin">
+      <div class="hero__track">
+        <div class="hero__pin">
+          <video
+            class="hero__video"
+            id="hero-video"
+            muted
+            playsinline
+            preload="auto"
+            disableremoteplayback
+            aria-hidden="true"
+          >
+            <source src="videos/video_hero.mp4" type="video/mp4" />
+          </video>
+
+          <div class="hero__atmosphere" aria-hidden="true">
+            <div class="hero__grain"></div>
+            <div class="hero__vignette"></div>
+          </div>
+
+          <!-- Rails preserved (now layered above the video) -->
+          <div class="hero__rail hero__rail--left" aria-hidden="true">
+            <span>Içara · SC</span>
+            <span class="hero__rail-bar"></span>
+            <span>Rod. SC-445 · Km 66</span>
+          </div>
+          <div class="hero__rail hero__rail--right" aria-hidden="true">
+            <span>Lat. 28°42′S</span>
+            <span class="hero__rail-bar"></span>
+            <span>Long. 49°18′W</span>
+          </div>
+
+          <!-- Overlay 1 — visible during 0–7s of the video, bottom-left -->
+          <div
+            class="hero__overlay hero__overlay--left"
+            id="overlay-left"
+            data-segment="left"
+          >
+            <span class="hero__overlay-marker" aria-hidden="true"></span>
+            <p class="hero__overlay-eyebrow">
+              <em>Do Vêneto a Içara:</em>
+            </p>
+            <h2 class="hero__overlay-title">
+              O vinho que o mundo reconhece
+            </h2>
+          </div>
+
+          <!-- Overlay 2 — visible during 7s–end of the video, bottom-right -->
+          <div
+            class="hero__overlay hero__overlay--right"
+            id="overlay-right"
+            data-segment="right"
+          >
+            <p class="hero__overlay-eyebrow hero__overlay-eyebrow--accent">
+              <em>Tradição italiana.</em>
+            </p>
+            <p class="hero__overlay-eyebrow">
+              <em>Terroir catarinense.</em>
+            </p>
+            <h2 class="hero__overlay-title hero__overlay-title--accent">
+              Qualidade incontestável.
+            </h2>
+            <span class="hero__overlay-marker hero__overlay-marker--right" aria-hidden="true"></span>
+          </div>
+
+          <!-- Bottom status row -->
+          <div class="hero__status" aria-hidden="true">
+            <span class="hero__status-label">Capítulo</span>
+            <span class="hero__status-current" id="status-current">01</span>
+            <span class="hero__status-track">
+              <span class="hero__status-fill" id="status-fill"></span>
+            </span>
+            <span class="hero__status-total">02</span>
+          </div>
+
+          <!-- Scroll hint at first frame only -->
+          <div class="hero__hint" aria-hidden="true" id="hero-hint">
+            <span>Role para descobrir</span>
+            <span class="hero__hint-arrow">↓</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         BRAND INTRO · Static identity (formerly the hero content)
+         ============================================================ -->
+    <section class="brand-intro" id="brand-intro" aria-labelledby="brand-title">
+      <div class="brand-intro__atmosphere" aria-hidden="true">
+        <div class="brand-intro__glow"></div>
       </div>
 
-      <div class="hero__rail hero__rail--left" aria-hidden="true">
-        <span>Içara · SC</span>
-        <span class="hero__rail-bar"></span>
-        <span>Rod. SC-445 · Km 66</span>
-      </div>
-      <div class="hero__rail hero__rail--right" aria-hidden="true">
-        <span>Lat. 28°42′S</span>
-        <span class="hero__rail-bar"></span>
-        <span>Long. 49°18′W</span>
-      </div>
-
-      <div class="hero__content">
-        <p class="hero__eyebrow" data-reveal="1">
-          <span class="hero__eyebrow-line" aria-hidden="true"></span>
+      <div class="brand-intro__content">
+        <p class="brand-intro__eyebrow">
+          <span class="brand-intro__eyebrow-line" aria-hidden="true"></span>
           Içara · Santa Catarina · Fundada em 2002
-          <span class="hero__eyebrow-line" aria-hidden="true"></span>
+          <span class="brand-intro__eyebrow-line" aria-hidden="true"></span>
         </p>
 
-        <h1 class="hero__title" id="hero-title" data-reveal="2">
-          <span class="hero__word">Vinhos</span>
-          <span class="hero__word">Quarezemin</span>
+        <h1 class="brand-intro__title" id="brand-title">
+          <span class="brand-intro__word">Vinhos</span>
+          <span class="brand-intro__word">Quarezemin</span>
         </h1>
 
-        <div class="hero__rule" data-reveal="3" aria-hidden="true">
-          <span class="hero__rule-fill"></span>
+        <div class="brand-intro__rule" aria-hidden="true">
+          <span class="brand-intro__rule-fill"></span>
         </div>
 
-        <p class="hero__caption" data-reveal="4">
+        <p class="brand-intro__caption">
           <em>Tradição e Qualidade</em>
         </p>
 
-        <p class="hero__lede" data-reveal="5">
+        <p class="brand-intro__lede">
           O maior produtor de uva Goethe do mundo. Tradição italiana das famílias
           Quarezemin e Felipe convertida em vinhos artesanais de
-          <span class="hero__lede-em">qualidade incontestável</span>.
+          <span class="brand-intro__lede-em">qualidade incontestável</span>.
         </p>
 
-        <div class="hero__cta" data-reveal="6">
+        <div class="brand-intro__cta">
           <a class="btn btn--primary" href="#vinhos">
             Ver Catálogo
             <span class="btn__arrow" aria-hidden="true">→</span>
@@ -106,34 +186,30 @@
         </div>
       </div>
 
-      <div class="hero__meta" data-reveal="7" aria-hidden="true">
-        <div class="hero__meta-cell">
-          <span class="hero__meta-num">23<sup>+</sup></span>
-          <span class="hero__meta-label">Anos de tradição</span>
+      <div class="brand-intro__meta" aria-hidden="true">
+        <div class="brand-intro__meta-cell">
+          <span class="brand-intro__meta-num">23<sup>+</sup></span>
+          <span class="brand-intro__meta-label">Anos de tradição</span>
         </div>
-        <div class="hero__meta-cell">
-          <span class="hero__meta-num">N<sup>o</sup>1</span>
-          <span class="hero__meta-label">Produtor de Goethe<br />do mundo</span>
+        <div class="brand-intro__meta-cell">
+          <span class="brand-intro__meta-num">N<sup>o</sup>1</span>
+          <span class="brand-intro__meta-label">Produtor de Goethe<br />do mundo</span>
         </div>
-        <div class="hero__meta-cell">
-          <span class="hero__meta-num">D.O.</span>
-          <span class="hero__meta-label">Vales da Uva Goethe<br />2025</span>
+        <div class="brand-intro__meta-cell">
+          <span class="brand-intro__meta-num">D.O.</span>
+          <span class="brand-intro__meta-label">Vales da Uva Goethe<br />2025</span>
         </div>
-        <div class="hero__meta-cell">
-          <span class="hero__meta-num">100%</span>
-          <span class="hero__meta-label">Colheita manual</span>
+        <div class="brand-intro__meta-cell">
+          <span class="brand-intro__meta-num">100%</span>
+          <span class="brand-intro__meta-label">Colheita manual</span>
         </div>
       </div>
-
-      <a class="hero__scroll" href="#vinhos" aria-label="Rolar para o conteúdo">
-        <span class="hero__scroll-label">Descer · Catálogo</span>
-        <span class="hero__scroll-line" aria-hidden="true"></span>
-      </a>
     </section>
   </main>
 
+  <script type="module" src="assets/js/hero-scroll.js"></script>
   <script>
-    // Defer the reveal until the next frame so the initial states paint first.
+    // Reveal the header/intro after first paint
     requestAnimationFrame(() => {
       requestAnimationFrame(() => document.body.classList.remove('is-loading'));
     });
