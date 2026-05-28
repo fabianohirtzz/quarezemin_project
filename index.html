@@ -221,72 +221,6 @@
     </section>
 
     <!-- ============================================================
-         BRAND INTRO · Static identity stats
-         ============================================================ -->
-    <section class="brand-intro" id="brand-intro" aria-labelledby="brand-title">
-      <div class="brand-intro__atmosphere" aria-hidden="true">
-        <div class="brand-intro__glow"></div>
-      </div>
-
-      <div class="brand-intro__content">
-        <p class="brand-intro__eyebrow">
-          <span class="brand-intro__eyebrow-line" aria-hidden="true"></span>
-          Içara · Santa Catarina · Fundada em 2002
-          <span class="brand-intro__eyebrow-line" aria-hidden="true"></span>
-        </p>
-
-        <h1 class="brand-intro__title" id="brand-title">
-          <span class="brand-intro__word">Vinhos</span>
-          <span class="brand-intro__word">Quarezemin</span>
-        </h1>
-
-        <div class="brand-intro__rule" aria-hidden="true">
-          <span class="brand-intro__rule-fill"></span>
-        </div>
-
-        <p class="brand-intro__caption">
-          <em>Tradição e Qualidade</em>
-        </p>
-
-        <p class="brand-intro__lede">
-          O maior produtor de uva Goethe do mundo. Tradição italiana das famílias
-          Quarezemin e Felipe convertida em vinhos artesanais de
-          <span class="brand-intro__lede-em">qualidade incontestável</span>.
-        </p>
-
-        <div class="brand-intro__cta">
-          <a class="btn btn--primary" href="#vinhos">
-            Ver Catálogo
-            <span class="btn__arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="btn btn--ghost" href="#historia">
-            <span class="btn__play" aria-hidden="true"></span>
-            Conheça a Vinícola
-          </a>
-        </div>
-      </div>
-
-      <div class="brand-intro__meta" aria-hidden="true">
-        <div class="brand-intro__meta-cell">
-          <span class="brand-intro__meta-num">23<sup>+</sup></span>
-          <span class="brand-intro__meta-label">Anos de tradição</span>
-        </div>
-        <div class="brand-intro__meta-cell">
-          <span class="brand-intro__meta-num">N<sup>o</sup>1</span>
-          <span class="brand-intro__meta-label">Produtor de Goethe<br />do mundo</span>
-        </div>
-        <div class="brand-intro__meta-cell">
-          <span class="brand-intro__meta-num">D.O.</span>
-          <span class="brand-intro__meta-label">Vales da Uva Goethe<br />2025</span>
-        </div>
-        <div class="brand-intro__meta-cell">
-          <span class="brand-intro__meta-num">100%</span>
-          <span class="brand-intro__meta-label">Colheita manual</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
          NOSSAS BEBIDAS · Coverflow carousel
          Inspired by privios.com/nuestros-vinos — bottles staged
          with the focal one centered and side bottles dimmed.
@@ -458,6 +392,125 @@
         <div class="bebidas__dots" id="bebidas-dots" role="tablist" aria-label="Selecionar bebida"></div>
       </div>
     </section>
+
+    <!-- ============================================================
+         A IMPORTÂNCIA DA ORIGEM · Stylized map of Içara / SC
+         Inspired by privios.com/about.html — hand-drawn outlines
+         with the wine region as a filled blob in the brand red.
+         ============================================================ -->
+    <section class="origem" id="origem" aria-labelledby="origem-title">
+      <div class="origem__atmosphere" aria-hidden="true">
+        <div class="origem__glow"></div>
+      </div>
+
+      <div class="origem__map-wrap" data-reveal="origem-map">
+        <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa de Santa Catarina com Içara em destaque">
+          <!-- Stylized Santa Catarina state outline -->
+          <path class="origem__map-state" d="
+            M 90 180
+            C 100 130, 180 100, 260 110
+            L 380 90
+            C 460 95, 510 130, 530 200
+            L 510 270
+            C 500 320, 470 360, 440 380
+            L 410 420
+            C 380 430, 360 430, 330 420
+            L 300 405
+            C 280 400, 270 405, 260 415
+            L 240 440
+            C 220 450, 200 445, 185 430
+            L 160 410
+            C 140 390, 130 370, 130 340
+            L 120 290
+            C 110 260, 100 220, 90 180
+            Z
+          " />
+
+          <!-- East coast — runs NE to SW -->
+          <path class="origem__map-coast" d="
+            M 480 50
+            C 510 100, 540 160, 525 220
+            S 490 320, 460 380
+            S 410 470, 360 530
+            S 290 580, 230 590
+          " />
+
+          <!-- Içara blob — vermelho italiano com glow -->
+          <g transform="translate(360, 360)">
+            <path class="origem__map-blob" d="
+              M -20 -8
+              C -22 -16, -14 -20, -4 -20
+              C 8 -22, 20 -14, 22 -4
+              C 24 6, 20 14, 12 18
+              C 4 22, -6 22, -14 18
+              C -22 14, -24 4, -20 -8
+              Z
+            " />
+          </g>
+
+          <!-- Vinícola pin with pulsing ring -->
+          <g transform="translate(364, 358)">
+            <circle class="origem__map-pin-outer" cx="0" cy="0" r="12">
+              <animate attributeName="r" values="10;16;10" dur="2.6s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.5;0.0;0.5" dur="2.6s" repeatCount="indefinite" />
+            </circle>
+            <circle class="origem__map-pin-inner" cx="0" cy="0" r="4" />
+          </g>
+
+          <!-- Coordinate tick + label -->
+          <g>
+            <line class="origem__map-tick" x1="368" y1="358" x2="450" y2="280" />
+            <text class="origem__map-coord" x="455" y="278">28°42′S · 49°18′W</text>
+            <text class="origem__map-coord" x="455" y="292">Rod. SC-445 · Km 66</text>
+          </g>
+
+          <!-- Içara label -->
+          <text class="origem__map-label" x="360" y="425" text-anchor="middle">Içara · SC</text>
+          <text class="origem__map-sub"   x="360" y="448" text-anchor="middle">Vales da Uva Goethe</text>
+
+          <!-- State label -->
+          <text class="origem__map-coord" x="280" y="160" text-anchor="middle">Santa Catarina · Brasil</text>
+        </svg>
+      </div>
+
+      <div class="origem__text" data-reveal="origem-text">
+        <p class="origem__eyebrow">A importância do lugar</p>
+        <h2 class="origem__title" id="origem-title">
+          A importância
+          <em>da origem</em>
+        </h2>
+        <p class="origem__lede">
+          Entre as encostas da Serra Geral e o litoral catarinense, nasce um
+          vinho que o mundo reconhece.
+        </p>
+        <p class="origem__body">
+          Nossos vinhos vêm de <strong>Içara, Santa Catarina</strong> — coração
+          da Denominação de Origem Vales da Uva Goethe, primeira D.O. de vinhos
+          do estado e única região no mundo a cultivar a uva Goethe sob
+          Indicação Geográfica certificada. Mãos experientes apostam na poda e
+          vindima manuais, revelando o caráter único do nosso terroir italiano
+          em solo catarinense.
+        </p>
+        <div class="origem__meta">
+          <div class="origem__meta-cell">
+            <span class="origem__meta-cell__key">Anos</span>
+            <span class="origem__meta-cell__val">23<sup>+</sup></span>
+          </div>
+          <div class="origem__meta-cell">
+            <span class="origem__meta-cell__key">D.O.</span>
+            <span class="origem__meta-cell__val">2025</span>
+          </div>
+          <div class="origem__meta-cell">
+            <span class="origem__meta-cell__key">Goethe</span>
+            <span class="origem__meta-cell__val">N<sup>o</sup>1</span>
+          </div>
+          <div class="origem__meta-cell">
+            <span class="origem__meta-cell__key">Colheita</span>
+            <span class="origem__meta-cell__val">100%</span>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script type="module" src="assets/js/hero-scroll.js"></script>
@@ -483,6 +536,19 @@
           toggle.setAttribute('aria-expanded', 'false');
         });
       });
+    })();
+
+    // Reveal sections on scroll
+    (() => {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-revealed');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.18 });
+      document.querySelectorAll('.origem').forEach(s => obs.observe(s));
     })();
   </script>
 </body>
