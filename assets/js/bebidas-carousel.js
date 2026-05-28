@@ -185,8 +185,10 @@ function initCarousel() {
   }
 
   // — Wired interactions —
-  prevBtn?.addEventListener("click", () => advance(-1));
-  nextBtn?.addEventListener("click", () => advance( 1));
+  // Arrows: stopPropagation so the click never bubbles to anything
+  // else (track, cards, document) that could trigger a second advance.
+  prevBtn?.addEventListener("click", (e) => { e.stopPropagation(); advance(-1); });
+  nextBtn?.addEventListener("click", (e) => { e.stopPropagation(); advance( 1); });
 
   document.addEventListener("keydown", (e) => {
     if (!isSectionInView()) return;
@@ -201,25 +203,29 @@ function initCarousel() {
     return r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4;
   }
 
-  // Touch swipe
+  // Touch swipe — restricted to a single advance per gesture
   let touchStartX = null;
-  track.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  let touchHandled = false;
+  track.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchHandled = false;
+  }, { passive: true });
   track.addEventListener("touchend", (e) => {
-    if (touchStartX == null) return;
+    if (touchStartX == null || touchHandled) return;
     const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 40) advance(dx < 0 ? 1 : -1);
+    if (Math.abs(dx) > 50) {
+      touchHandled = true;
+      advance(dx < 0 ? 1 : -1);
+    }
     touchStartX = null;
   });
 
-  // Click a side card to jump to it
-  allCards.forEach((card) => {
-    card.addEventListener("click", () => {
-      const idx = visible.indexOf(card);
-      if (idx >= 0 && idx !== active) setActive(idx);
-    });
-    card.style.pointerEvents = "auto";
-    card.style.cursor = "pointer";
-  });
+  // NOTE: We intentionally do NOT add click-to-jump on side cards.
+  // The previous implementation let a user click any visible bottle
+  // to jump to it — but on a coverflow with 5 visible bottles per
+  // side, this made it easy to click a card 2–3 positions away by
+  // accident and perceive it as the arrow "skipping" products.
+  // Navigation is now strictly: arrows + dots + keyboard + swipe.
 
   // Filter via fluid dropdown CustomEvent
   document.addEventListener("bebidas:filter", (e) => {

@@ -1054,9 +1054,11 @@ sup { font-size: 0.5em; vertical-align: super; line-height: 1; }
   pointer-events: none;
 }
 .bebidas__card[data-far="true"] { opacity: 0; pointer-events: none; }
+/* Side cards must remain non-interactive so a stray click near the
+   arrow doesn't accidentally jump to a side product. */
+.bebidas__card { pointer-events: none !important; cursor: default !important; }
 .bebidas__card.is-active {
-  pointer-events: auto;
-  cursor: default;
+  cursor: default !important;
   z-index: 200;
 }
 
