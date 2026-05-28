@@ -18,38 +18,107 @@
 
   <link rel="stylesheet" href="assets/css/main.css" />
 
-  <!-- Preload the video so scroll-scrub feels instant -->
-  <link rel="preload" as="video" href="videos/video_hero.mp4" type="video/mp4" />
+  <!-- Preload the all-intra video so scroll-scrub is frame-perfect -->
+  <link rel="preload" as="video" href="videos/video_hero_scrub.mp4" type="video/mp4" />
 </head>
 <body class="is-loading">
   <a class="skip-link" href="#brand-intro">Pular para o conteúdo</a>
 
   <header class="site-header" data-reveal="header">
-    <a class="brand" href="#hero" aria-label="Vinhos Quarezemin — início">
-      <img class="brand__mark" src="imagens/logo-quarezemin.png" alt="" aria-hidden="true" />
-      <span class="brand__type">
-        <span class="brand__name">Quarezemin</span>
-        <span class="brand__tag">Estate · MMII</span>
-      </span>
-    </a>
+    <div class="site-header__bar">
+      <a class="brand" href="#hero" aria-label="Vinhos Quarezemin — início">
+        <img class="brand__logo" src="imagens/logo-quarezemin.png" alt="Vinhos Quarezemin" />
+      </a>
 
-    <nav class="site-nav" aria-label="Navegação principal">
-      <a href="#vinhos">Vinhos</a>
-      <a href="#historia">História</a>
-      <a href="#premiacoes">Premiações</a>
-      <a href="#visitas">Visitas</a>
-      <a href="#contato">Contato</a>
-    </nav>
+      <nav class="site-nav" aria-label="Navegação principal">
+        <a class="nav-item" data-glow="vermelho" href="#vinhos">
+          <span class="nav-item__glow" aria-hidden="true"></span>
+          <span class="nav-item__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 22h8"/>
+              <path d="M7 10h10"/>
+              <path d="M12 15v7"/>
+              <path d="M12 15a5 5 0 0 0 5-5c0-2-.5-3.5-2-8H9c-1.5 4.5-2 6-2 8a5 5 0 0 0 5 5Z"/>
+            </svg>
+          </span>
+          <span class="nav-item__label">Vinhos</span>
+        </a>
 
-    <a
-      class="header-cta"
-      href="https://api.whatsapp.com/send?phone=5548999546255"
-      target="_blank"
-      rel="noopener"
-    >
-      <span class="header-cta__dot" aria-hidden="true"></span>
-      Pedidos · WhatsApp
-    </a>
+        <a class="nav-item" data-glow="verde" href="#historia">
+          <span class="nav-item__glow" aria-hidden="true"></span>
+          <span class="nav-item__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 7v14"/>
+              <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>
+            </svg>
+          </span>
+          <span class="nav-item__label">História</span>
+        </a>
+
+        <a class="nav-item" data-glow="dourado" href="#premiacoes">
+          <span class="nav-item__glow" aria-hidden="true"></span>
+          <span class="nav-item__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/>
+              <circle cx="12" cy="8" r="6"/>
+            </svg>
+          </span>
+          <span class="nav-item__label">Premiações</span>
+        </a>
+
+        <a class="nav-item" data-glow="creme" href="#visitas">
+          <span class="nav-item__glow" aria-hidden="true"></span>
+          <span class="nav-item__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </span>
+          <span class="nav-item__label">Visitas</span>
+        </a>
+
+        <a class="nav-item" data-glow="vermelho-deep" href="#contato">
+          <span class="nav-item__glow" aria-hidden="true"></span>
+          <span class="nav-item__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>
+            </svg>
+          </span>
+          <span class="nav-item__label">Contato</span>
+        </a>
+
+        <span class="site-nav__aurora" aria-hidden="true"></span>
+      </nav>
+
+      <a
+        class="header-cta"
+        href="https://api.whatsapp.com/send?phone=5548999546255"
+        target="_blank"
+        rel="noopener"
+        aria-label="Pedidos via WhatsApp"
+      >
+        <span class="header-cta__dot" aria-hidden="true"></span>
+        <span class="header-cta__label">Pedidos</span>
+        <svg class="header-cta__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/>
+          <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/>
+        </svg>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile drawer (CSS-only via :target / aria-expanded) -->
+    <div class="nav-drawer" id="nav-drawer" role="dialog" aria-label="Menu de navegação">
+      <a class="nav-drawer__item" href="#vinhos">Vinhos</a>
+      <a class="nav-drawer__item" href="#historia">História</a>
+      <a class="nav-drawer__item" href="#premiacoes">Premiações</a>
+      <a class="nav-drawer__item" href="#visitas">Visitas</a>
+      <a class="nav-drawer__item" href="#contato">Contato</a>
+    </div>
   </header>
 
   <main>
@@ -68,7 +137,7 @@
             disableremoteplayback
             aria-hidden="true"
           >
-            <source src="videos/video_hero.mp4" type="video/mp4" />
+            <source src="videos/video_hero_scrub.mp4" type="video/mp4" />
           </video>
 
           <div class="hero__atmosphere" aria-hidden="true">
@@ -213,6 +282,23 @@
     requestAnimationFrame(() => {
       requestAnimationFrame(() => document.body.classList.remove('is-loading'));
     });
+
+    // Mobile nav drawer toggle
+    (() => {
+      const toggle = document.querySelector('.nav-toggle');
+      const drawer = document.getElementById('nav-drawer');
+      if (!toggle || !drawer) return;
+      toggle.addEventListener('click', () => {
+        const open = drawer.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      drawer.querySelectorAll('.nav-drawer__item').forEach(link => {
+        link.addEventListener('click', () => {
+          drawer.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
   </script>
 </body>
 </html>

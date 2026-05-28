@@ -2,20 +2,26 @@
  * Hero scroll-driven video scrubbing.
  *
  * Pattern (borrowed from assamtea.vercel.app):
+ *   - Lenis takes over the wheel/touch and produces a smoothly
+ *     interpolated `scrollY` (no more discrete jumps per wheel tick).
  *   - The hero is a sticky pin inside a tall track.
  *   - Page scroll progress through the track drives video.currentTime.
  *   - Text overlays cross-fade based on the playhead time:
  *       0s  → 7s   : LEFT  overlay
  *       7s  → end  : RIGHT overlay
  *
- * Uses Motion One's `scroll()` for the progress source.
+ * The video is encoded all-intra (every frame is a keyframe) so
+ * video.currentTime seeks are O(1) and the playhead tracks the scroll
+ * with no decode lag. Lenis + all-intra together give the experience
+ * of continuous playback rather than frame-by-frame stepping.
  */
 import { scroll } from "https://cdn.jsdelivr.net/npm/motion@11/+esm";
+import Lenis      from "https://cdn.jsdelivr.net/npm/lenis@1.1.20/+esm";
 
-const SPLIT_SECONDS = 7;                 // boundary requested by the brief
-const CROSSFADE_S   = 1.0;               // 1 second crossfade window
-const FADE_IN_S     = 0.6;               // initial fade-in window
-const FADE_OUT_TAIL = 0.8;               // tail fade-out near video end
+const SPLIT_SECONDS = 7;
+const CROSSFADE_S   = 1.0;
+const FADE_IN_S     = 0.6;
+const FADE_OUT_TAIL = 0.8;
 
 const track       = document.querySelector(".hero__track");
 const hero        = document.querySelector(".hero");
@@ -35,28 +41,46 @@ if (!track || !video || !overlayLeft || !overlayRight) {
 function init() {
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Smooth lerp loop — decouples scroll events from video.currentTime
-  // writes so we don't thrash the decoder on rapid scrolls.
+  // Smooth-scroll engine: intercepts wheel/touch and interpolates
+  // the page's scroll position with momentum + easing, so the video
+  // scrub is driven by a continuous signal rather than discrete
+  // wheel events. This is the same technique assamtea uses.
+  if (!reduceMotion) {
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      touchMultiplier: 1.1,
+      wheelMultiplier: 1,
+    });
+    function rafLenis(time) {
+      lenis.raf(time);
+      requestAnimationFrame(rafLenis);
+    }
+    requestAnimationFrame(rafLenis);
+  }
+
   let targetTime  = 0;
   let currentTime = 0;
   let ready       = false;
-  let duration    = 15.37; // fallback; replaced when metadata loads
+  let duration    = 15.37;
 
+  // Mark video as ready once we have metadata + first frame decoded
   video.addEventListener("loadedmetadata", () => {
     duration = video.duration;
+  });
+  video.addEventListener("loadeddata", () => {
     ready = true;
-    // Make sure we render the first frame
-    try { video.currentTime = 0.05; } catch (_) { /* noop */ }
+    try { video.currentTime = 0.001; } catch (_) {}
+    applyOverlays(0);
   });
 
-  // Some browsers won't surface "loadedmetadata" without an explicit load()
+  // Decode hint — force the browser to load and decode the first frame
   video.load();
 
   function applyOverlays(timeSec) {
-    // Returns a 0..1 opacity for each overlay given the current playhead.
     let leftOp = 0, rightOp = 0;
 
-    // LEFT: fade in over FADE_IN_S, hold, then crossfade out at SPLIT_SECONDS
     if (timeSec < SPLIT_SECONDS + CROSSFADE_S / 2) {
       const fadeIn  = clamp(timeSec / FADE_IN_S, 0, 1);
       const fadeOut = 1 - clamp(
@@ -66,7 +90,6 @@ function init() {
       leftOp = Math.min(fadeIn, fadeOut);
     }
 
-    // RIGHT: crossfades in around SPLIT_SECONDS, holds, fades out at end
     if (timeSec > SPLIT_SECONDS - CROSSFADE_S / 2) {
       const fadeIn  = clamp(
         (timeSec - (SPLIT_SECONDS - CROSSFADE_S / 2)) / CROSSFADE_S,
@@ -87,56 +110,54 @@ function init() {
     if (statusCurr) statusCurr.textContent = timeSec < SPLIT_SECONDS ? "01" : "02";
   }
 
-  // Drive scroll → targetTime; the rAF loop below lerps + applies it.
+  // Scroll → targetTime
   scroll(
     (info) => {
-      // Motion v11 passes a progress object (`{ progress, ... }`) OR a number
-      // depending on version — normalize to a 0..1 number.
       const p = typeof info === "number" ? info : (info && info.progress) || 0;
       const progress = clamp(p, 0, 1);
 
-      targetTime = progress * (ready ? duration : 15.37);
+      targetTime = progress * duration;
 
-      // Status bar reflects raw scroll progress (responsive feel)
       if (statusFill) statusFill.style.width = (progress * 100).toFixed(1) + "%";
 
-      // Dismiss the scroll hint once the user starts moving
       if (progress > 0.02) hero.classList.add("is-scrolled");
       else hero.classList.remove("is-scrolled");
-
-      if (reduceMotion) {
-        // No video scrubbing for reduced-motion — still apply overlays
-        applyOverlays(targetTime);
-        if (ready) {
-          try { video.currentTime = targetTime; } catch (_) {}
-        }
-      }
     },
     { target: track, offset: ["start start", "end end"] }
   );
 
-  // rAF loop: smoothly interpolate currentTime toward targetTime
+  // rAF loop: tight lerp toward target. All-intra means seeks are
+  // cheap, so we can update on every frame at high lerp factor —
+  // the playhead chases the scroll position smoothly.
+  let lastApplied = -1;
+  const seek = (t) => {
+    // throttle to avoid setting the same time twice
+    if (Math.abs(t - lastApplied) < 0.012) return;
+    try { video.currentTime = t; } catch (_) {}
+    lastApplied = t;
+  };
+
   function tick() {
     if (ready && !reduceMotion) {
+      // High lerp factor for responsive feel (0.35 ≈ catch-up in ~3 frames)
+      const lerp = 0.35;
       const delta = targetTime - currentTime;
-      if (Math.abs(delta) > 0.005) {
-        currentTime += delta * 0.22; // lerp factor — feel-tuned
-        const t = clamp(currentTime, 0, duration - 0.01);
-        try { video.currentTime = t; } catch (_) {}
+      if (Math.abs(delta) > 0.001) {
+        currentTime += delta * lerp;
+        const t = clamp(currentTime, 0, duration - 0.001);
+        seek(t);
         applyOverlays(t);
-      } else {
-        // settle on target
-        if (Math.abs(targetTime - currentTime) > 0) {
-          currentTime = targetTime;
-          applyOverlays(currentTime);
-        }
       }
+    } else if (reduceMotion && ready) {
+      // Reduced-motion: jump directly to target, no lerp
+      const t = clamp(targetTime, 0, duration - 0.001);
+      seek(t);
+      applyOverlays(t);
     }
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
 
-  // Initial state: render first frame + show left overlay at 0
   applyOverlays(0);
 }
 
