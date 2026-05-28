@@ -1,0 +1,8 @@
+node_modules/
+package-lock.json
+reference/hero-real-*.png
+reference/hero-structure.html
+reference/quarezemin-hero-*.png
+.DS_Store
+Thumbs.db
+*.log
