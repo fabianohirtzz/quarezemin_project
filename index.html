@@ -575,11 +575,242 @@
         </div>
       </div>
     </section>
+
+    <!-- ============================================================
+         VISITAS E EVENTOS · Booking form
+         Inspired by 21st.dev ride-booking-form + background-gradient-glow.
+         Light section bg with the vinícola fachada · inner card with
+         brand-tinted aurora glow · vertical Visitas/Eventos tabs swap
+         the form fields.
+         ============================================================ -->
+    <section class="visitas" id="visitas" aria-labelledby="visitas-title">
+      <div class="visitas__bg" aria-hidden="true">
+        <img src="imagens/fachada-vinicola-caminhao.png" alt="" />
+        <div class="visitas__bg-overlay"></div>
+      </div>
+
+      <div class="visitas__wrap">
+        <header class="visitas__head">
+          <p class="visitas__eyebrow">
+            <span aria-hidden="true"></span>
+            Rod. SC-445 · Km 66 · Içara/SC
+            <span aria-hidden="true"></span>
+          </p>
+          <h2 class="visitas__title" id="visitas-title">
+            <em>Agende</em> sua experiência
+          </h2>
+          <p class="visitas__sub">
+            Venha conhecer os parreirais, a cantina histórica em pedra e os
+            vinhos artesanais. Para grupos privados, eventos ou degustações,
+            seleciona ao lado.
+          </p>
+        </header>
+
+        <div class="visitas__card">
+          <div class="visitas__card-glow" aria-hidden="true"></div>
+
+          <div class="visitas__card-content">
+            <!-- Vertical tab rail -->
+            <nav class="visitas__tabs" role="tablist" aria-label="Tipo de experiência">
+              <button
+                class="visitas__tab is-active"
+                type="button"
+                role="tab"
+                data-tab="visitas"
+                aria-selected="true"
+                aria-controls="form-visitas"
+                id="tab-visitas"
+              >
+                <span class="visitas__tab-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </span>
+                <span class="visitas__tab-label">
+                  <span class="visitas__tab-title">Visitas</span>
+                  <span class="visitas__tab-sub">Tour, degustação, vindima</span>
+                </span>
+              </button>
+
+              <button
+                class="visitas__tab"
+                type="button"
+                role="tab"
+                data-tab="eventos"
+                aria-selected="false"
+                aria-controls="form-eventos"
+                id="tab-eventos"
+              >
+                <span class="visitas__tab-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/>
+                    <path d="M16 2v4M8 2v4M3 10h18"/>
+                    <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
+                  </svg>
+                </span>
+                <span class="visitas__tab-label">
+                  <span class="visitas__tab-title">Eventos</span>
+                  <span class="visitas__tab-sub">Casamentos, corporativos, vindima</span>
+                </span>
+              </button>
+
+              <div class="visitas__tab-highlight" aria-hidden="true"></div>
+            </nav>
+
+            <!-- Form panels — Visitas active by default -->
+            <div class="visitas__forms">
+              <form
+                class="visitas__form is-active"
+                id="form-visitas"
+                data-form="visitas"
+                role="tabpanel"
+                aria-labelledby="tab-visitas"
+              >
+                <div class="visitas__form-row">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Nome completo</span>
+                    <input type="text" name="nome" placeholder="Como devemos te chamar?" required />
+                  </label>
+                </div>
+                <div class="visitas__form-row visitas__form-row--two">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">WhatsApp</span>
+                    <input type="tel" name="whatsapp" placeholder="(00) 0 0000-0000" required />
+                  </label>
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">E-mail</span>
+                    <input type="email" name="email" placeholder="seu@email.com" required />
+                  </label>
+                </div>
+                <div class="visitas__form-row visitas__form-row--two">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Tipo de experiência</span>
+                    <select name="experiencia" required>
+                      <option value="">Selecione…</option>
+                      <option value="tour-degustacao">Tour + Degustação</option>
+                      <option value="tour-adega">Tour pela Adega</option>
+                      <option value="degustacao">Degustação de Vinhos</option>
+                      <option value="vindima">Colheita na Vindima</option>
+                    </select>
+                  </label>
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Pessoas (máx. 30)</span>
+                    <input type="number" name="pessoas" min="1" max="30" placeholder="Ex. 8" required />
+                  </label>
+                </div>
+                <div class="visitas__form-row visitas__form-row--two">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Data desejada</span>
+                    <input type="date" name="data" required />
+                  </label>
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Horário</span>
+                    <select name="horario" required>
+                      <option value="">Selecione…</option>
+                      <option value="manha">Manhã (9h–12h)</option>
+                      <option value="tarde">Tarde (14h–17h)</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="visitas__form-row">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Observações (opcional)</span>
+                    <textarea name="observacoes" rows="3" placeholder="Restrições alimentares, ocasião, acessibilidade…"></textarea>
+                  </label>
+                </div>
+                <div class="visitas__form-foot">
+                  <button type="submit" class="visitas__submit">
+                    <span>Confirmar visita</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                  </button>
+                  <p class="visitas__form-note">Confirmação via WhatsApp em até 24h.</p>
+                </div>
+              </form>
+
+              <form
+                class="visitas__form"
+                id="form-eventos"
+                data-form="eventos"
+                role="tabpanel"
+                aria-labelledby="tab-eventos"
+                hidden
+              >
+                <div class="visitas__form-row">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Nome do organizador</span>
+                    <input type="text" name="nome" placeholder="Seu nome completo" required />
+                  </label>
+                </div>
+                <div class="visitas__form-row visitas__form-row--two">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">WhatsApp</span>
+                    <input type="tel" name="whatsapp" placeholder="(00) 0 0000-0000" required />
+                  </label>
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">E-mail</span>
+                    <input type="email" name="email" placeholder="seu@email.com" required />
+                  </label>
+                </div>
+                <div class="visitas__form-row visitas__form-row--two">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Tipo de evento</span>
+                    <select name="tipo" required>
+                      <option value="">Selecione…</option>
+                      <option value="vindima">Vindima — Colheita da Goethe</option>
+                      <option value="pinta-brinda">Pinta e Brinda</option>
+                      <option value="degustacao-privada">Degustação privada</option>
+                      <option value="corporativo">Evento corporativo</option>
+                      <option value="casamento">Casamento / Bodas</option>
+                      <option value="aniversario">Aniversário</option>
+                    </select>
+                  </label>
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Nº de convidados</span>
+                    <input type="number" name="convidados" min="1" placeholder="Ex. 40" required />
+                  </label>
+                </div>
+                <div class="visitas__form-row">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Data desejada</span>
+                    <input type="date" name="data" required />
+                  </label>
+                </div>
+                <div class="visitas__form-row">
+                  <label class="visitas__field">
+                    <span class="visitas__field-label">Descrição</span>
+                    <textarea name="descricao" rows="4" placeholder="Tema, necessidades, serviços desejados…" required></textarea>
+                  </label>
+                </div>
+                <div class="visitas__form-foot">
+                  <button type="submit" class="visitas__submit">
+                    <span>Solicitar proposta</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                  </button>
+                  <p class="visitas__form-note">Resposta personalizada via WhatsApp em até 48h.</p>
+                </div>
+              </form>
+            </div>
+
+            <!-- Aside image (events) -->
+            <aside class="visitas__aside" aria-hidden="true">
+              <img src="imagens/card-contato-eventos.png" alt="" />
+              <div class="visitas__aside-overlay"></div>
+              <div class="visitas__aside-caption">
+                <p>Cantina em pedra · 2002</p>
+                <strong>Içara · Santa Catarina</strong>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script type="module" src="assets/js/hero-scroll.js"></script>
   <script type="module" src="assets/js/historia-expansion.js"></script>
   <script src="assets/js/bebidas-carousel.js" defer></script>
+  <script src="assets/js/visitas-form.js" defer></script>
   <script>
     // Reveal the header/intro after first paint
     requestAnimationFrame(() => {
