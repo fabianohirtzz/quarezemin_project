@@ -8,10 +8,26 @@
 (() => {
   const tabs = document.querySelectorAll(".visitas__tab");
   const tabBar = document.querySelector(".visitas__tabs");
+  const highlight = document.querySelector(".visitas__tab-highlight");
   const forms = document.querySelectorAll(".visitas__form");
   const WHATSAPP = "5548999546255";
 
   if (!tabs.length || !forms.length) return;
+
+  // Place the highlight pill EXACTLY behind the active tab. Reads
+  // real geometry so it works for any layout (vertical desktop,
+  // horizontal mobile) and survives content/size changes.
+  function moveHighlight() {
+    if (!highlight) return;
+    const active = tabBar.querySelector(".visitas__tab.is-active");
+    if (!active) return;
+    highlight.style.top    = active.offsetTop + "px";
+    highlight.style.left   = active.offsetLeft + "px";
+    highlight.style.width  = active.offsetWidth + "px";
+    highlight.style.height = active.offsetHeight + "px";
+    highlight.style.right  = "auto"; // override CSS shorthand
+    highlight.classList.add("is-ready");
+  }
 
   function setActive(name) {
     tabs.forEach((t) => {
@@ -24,13 +40,13 @@
       f.classList.toggle("is-active", active);
       f.hidden = !active;
     });
-    if (tabBar) {
-      tabBar.classList.toggle("is-eventos", name === "eventos");
-      tabBar.classList.toggle("is-visitas", name === "visitas");
-    }
+    requestAnimationFrame(moveHighlight);
   }
 
   tabs.forEach((t) => t.addEventListener("click", () => setActive(t.dataset.tab)));
+  window.addEventListener("resize", moveHighlight);
+  // Initial pill placement after layout settles
+  requestAnimationFrame(() => requestAnimationFrame(moveHighlight));
 
   // Submit → WhatsApp deeplink with a structured message
   forms.forEach((form) => {
