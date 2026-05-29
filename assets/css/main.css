@@ -2235,8 +2235,10 @@ body:not(.is-loading) [data-reveal="header"] {
 }
 
 @media (max-width: 640px) {
-  /* Header: hide horizontal nav, surface drawer toggle, turn the CTA
-     into a tidy WhatsApp green chip with just the icon. */
+  /* Header on mobile: hide the horizontal nav, surface the drawer
+     toggle. The WhatsApp CTA is dropped from the top bar entirely —
+     it lives inside the drawer as `.nav-drawer__item--whatsapp` so
+     the bar can breathe and the logo + hamburger anchor cleanly. */
   .site-header { top: 14px; left: 12px; right: 12px; }
   .site-header__bar {
     padding: 6px 6px 6px 10px;
@@ -2248,26 +2250,7 @@ body:not(.is-loading) [data-reveal="header"] {
   .brand { padding: 2px 8px; }
   .brand__logo { height: 38px; }
 
-  .header-cta {
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    justify-content: center;
-    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-    color: #fff;
-    box-shadow:
-      0 0 0 1px rgba(37, 211, 102, 0.45),
-      0 8px 22px rgba(18, 140, 126, 0.45);
-    gap: 0;
-  }
-  .header-cta:hover {
-    box-shadow:
-      0 0 0 1px rgba(37, 211, 102, 0.6),
-      0 12px 28px rgba(18, 140, 126, 0.55);
-  }
-  .header-cta__label { display: none; }
-  .header-cta__dot { display: none; }
-  .header-cta__icon { width: 22px; height: 22px; }
+  .header-cta { display: none; }
 }
 
 @media (max-width: 720px) {
