@@ -511,9 +511,74 @@
         </div>
       </div>
     </section>
+
+    <!-- ============================================================
+         NOSSA HISTÓRIA · Scroll Expansion Media
+         Inspired by 21st.dev/r/arunachalam0606/scroll-expansion-hero —
+         a video starts as a centered card and expands to fill the
+         viewport as the user scrolls; the static background image
+         fades away, then text content reveals below.
+         ============================================================ -->
+    <section class="historia" id="historia" aria-label="Nossa história">
+      <div class="historia__track">
+        <div class="historia__pin">
+          <img class="historia__bg" src="imagens/hero-historia-back.png" alt="" />
+          <div class="historia__bg-overlay" aria-hidden="true"></div>
+
+          <div class="historia__media" id="historia-media">
+            <video
+              class="historia__media-video"
+              id="historia-video"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+              disableremoteplayback
+              aria-hidden="true"
+            >
+              <source src="videos/section_historia.mp4" type="video/mp4" />
+            </video>
+            <div class="historia__media-tint" aria-hidden="true"></div>
+          </div>
+
+          <div class="historia__overlay" id="historia-overlay">
+            <p class="historia__eyebrow">
+              <span class="historia__eyebrow-line" aria-hidden="true"></span>
+              Vinhos Quarezemin · Içara/SC
+              <span class="historia__eyebrow-line" aria-hidden="true"></span>
+            </p>
+            <h2 class="historia__title">
+              <span class="historia__title-line">Uma história</span>
+              <span class="historia__title-line historia__title-line--italic">de tradição</span>
+            </h2>
+            <span class="historia__hint" id="historia-hint">
+              <span class="historia__hint-arrow">↓</span>
+              Role para expandir
+            </span>
+          </div>
+
+          <div class="historia__content" id="historia-content">
+            <p class="historia__lede">
+              Das regiões de <strong>Toscana e Vêneto</strong> ao Sul Catarinense,
+              a família Quarezemin cultiva a arte do vinho desde <strong>2002</strong>.
+              Uvas selecionadas, colhidas manualmente, envelhecidas em cantina de pedra.
+              O resultado é um vinho que carrega a alma do lugar.
+            </p>
+            <a class="historia__cta" href="#nossa-historia-completa">
+              Nossa História
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M13 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script type="module" src="assets/js/hero-scroll.js"></script>
+  <script type="module" src="assets/js/historia-expansion.js"></script>
   <script src="assets/js/bebidas-carousel.js" defer></script>
   <script>
     // Reveal the header/intro after first paint

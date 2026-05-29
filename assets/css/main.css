@@ -1419,6 +1419,246 @@ sup { font-size: 0.5em; vertical-align: super; line-height: 1; }
 }
 
 /* ============================================================
+   NOSSA HISTÓRIA — Scroll-driven media expansion
+   Outer track gives the scroll runway; inner pin is sticky and
+   houses the static background image and the centered media
+   container that grows from a card to fill the viewport.
+   ============================================================ */
+.historia {
+  position: relative;
+  background: var(--pedra);
+}
+.historia__track {
+  position: relative;
+  height: 280vh; /* scroll runway for the expansion */
+}
+.historia__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--pedra);
+}
+
+/* — Static background image — */
+.historia__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+  /* opacity driven by JS */
+}
+.historia__bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg,
+    rgba(10, 8, 7, 0.45) 0%,
+    rgba(10, 8, 7, 0.25) 30%,
+    rgba(10, 8, 7, 0.35) 70%,
+    rgba(10, 8, 7, 0.65) 100%);
+  pointer-events: none;
+}
+
+/* — Centered expanding media card — */
+.historia__media {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300px;
+  height: 400px;
+  transform: translate(-50%, -50%);
+  border-radius: 24px;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(245, 240, 232, 0.06);
+  will-change: width, height, border-radius;
+  max-width: 95vw;
+  max-height: 85vh;
+}
+.historia__media-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.historia__media-tint {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+/* — Centered overlay (eyebrow + title + hint) — */
+.historia__overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: min(720px, 86vw);
+  mix-blend-mode: difference;
+  color: var(--creme);
+  will-change: opacity;
+}
+.historia__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--creme);
+}
+.historia__eyebrow-line {
+  display: block;
+  width: 36px;
+  height: 1px;
+  background: var(--creme);
+  opacity: 0.7;
+}
+.historia__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 1;
+  color: var(--creme);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.historia__title-line { display: block; }
+.historia__title-line--italic {
+  font-style: italic;
+  font-weight: 300;
+}
+.historia__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--creme);
+  opacity: 0.7;
+  transition: opacity 0.4s var(--ease-out);
+}
+.historia__hint-arrow {
+  display: inline-block;
+  animation: hist-bob 2s ease-in-out infinite;
+}
+@keyframes hist-bob {
+  0%, 100% { transform: translateY(0);  opacity: 0.7; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+
+/* — Content (lede + CTA) revealed after full expansion — */
+.historia__content {
+  position: absolute;
+  left: 50%;
+  bottom: 8vh;
+  transform: translateX(-50%);
+  z-index: 4;
+  text-align: center;
+  width: min(680px, 88vw);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.historia.is-expanded .historia__content {
+  opacity: 1;
+  pointer-events: auto;
+}
+.historia.is-expanded .historia__hint { opacity: 0; }
+
+.historia__lede {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(15px, 1.6vw, 19px);
+  line-height: 1.65;
+  color: var(--creme);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+  max-width: 620px;
+}
+.historia__lede strong {
+  color: var(--dourado-light);
+  font-style: italic;
+  font-weight: 400;
+}
+.historia__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--pedra);
+  background: linear-gradient(135deg, var(--dourado), var(--dourado-soft));
+  box-shadow:
+    0 0 0 1px rgba(201, 160, 80, 0.5),
+    0 12px 36px rgba(201, 160, 80, 0.32);
+  transition:
+    transform 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out);
+}
+.historia__cta:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(201, 160, 80, 0.7),
+    0 18px 44px rgba(201, 160, 80, 0.45);
+}
+.historia__cta svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s var(--ease-out);
+}
+.historia__cta:hover svg { transform: translateX(3px); }
+
+@media (max-width: 768px) {
+  .historia__track { height: 240vh; }
+  .historia__media {
+    border-radius: 18px;
+    width: 240px;
+    height: 320px;
+  }
+  .historia__overlay { gap: 18px; }
+  .historia__title { font-size: clamp(38px, 11vw, 56px); }
+  .historia__eyebrow { font-size: 10px; letter-spacing: 0.32em; }
+  .historia__content { bottom: 6vh; gap: 18px; }
+  .historia__lede { font-size: 14px; }
+  .historia__cta { padding: 12px 22px; font-size: 10px; }
+}
+
+/* ============================================================
    Header reveal
    ============================================================ */
 [data-reveal="header"] {
