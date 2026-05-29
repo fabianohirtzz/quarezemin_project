@@ -4,6 +4,7 @@ package.json
 reference/
 .agent/
 .claude/
+.test/
 .DS_Store
 Thumbs.db
 *.log

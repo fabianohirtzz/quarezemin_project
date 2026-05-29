@@ -19,13 +19,17 @@ import { scroll } from "https://cdn.jsdelivr.net/npm/motion@11/+esm";
 import Lenis      from "https://cdn.jsdelivr.net/npm/lenis@1.1.20/+esm";
 
 const SPLIT_SECONDS = 7;
-// Tighten the crossfade on small screens — both overlays share the
-// same bottom anchor, so a long crossfade visibly stacks the chapter
-// 01 and 02 titles on top of each other during the transition.
+// On desktop the two overlays sit at opposite sides of the frame, so
+// a soft crossfade reads well. On mobile they share the same bottom
+// anchor; any crossfade visibly stacks the chapter 01 and 02 titles.
+// Mobile therefore uses a SEQUENTIAL fade — left fully vanishes
+// before right starts to appear (governed by GUARD_S) so the two
+// captions are never on screen at the same time.
 const IS_MOBILE     = matchMedia("(max-width: 720px)").matches;
-const CROSSFADE_S   = IS_MOBILE ? 0.28 : 1.0;
-const FADE_IN_S     = IS_MOBILE ? 0.4  : 0.6;
-const FADE_OUT_TAIL = IS_MOBILE ? 0.5  : 0.8;
+const CROSSFADE_S   = 1.0;
+const FADE_IN_S     = IS_MOBILE ? 0.4 : 0.6;
+const FADE_OUT_TAIL = IS_MOBILE ? 0.5 : 0.8;
+const GUARD_S       = 0.32;
 
 const track       = document.querySelector(".hero__track");
 const hero        = document.querySelector(".hero");
@@ -85,33 +89,43 @@ function init() {
   function applyOverlays(timeSec) {
     let leftOp = 0, rightOp = 0;
 
-    if (timeSec < SPLIT_SECONDS + CROSSFADE_S / 2) {
-      const fadeIn  = clamp(timeSec / FADE_IN_S, 0, 1);
-      const fadeOut = 1 - clamp(
-        (timeSec - (SPLIT_SECONDS - CROSSFADE_S / 2)) / CROSSFADE_S,
-        0, 1
-      );
-      leftOp = Math.min(fadeIn, fadeOut);
-    }
-
-    if (timeSec > SPLIT_SECONDS - CROSSFADE_S / 2) {
-      const fadeIn  = clamp(
-        (timeSec - (SPLIT_SECONDS - CROSSFADE_S / 2)) / CROSSFADE_S,
-        0, 1
-      );
-      const fadeOut = 1 - clamp(
-        (timeSec - (duration - FADE_OUT_TAIL)) / FADE_OUT_TAIL,
-        0, 1
-      );
-      rightOp = Math.min(fadeIn, fadeOut);
-    }
-
-    // On mobile, raise the visibility floor — anything below ~18%
-    // opacity reads as ghost text crashing into the other overlay,
-    // so snap it to zero instead.
     if (IS_MOBILE) {
-      if (leftOp  < 0.18) leftOp  = 0;
-      if (rightOp < 0.18) rightOp = 0;
+      // Mobile: sequential fade. Only one caption is ever on
+      // screen — the left fully vanishes by SPLIT_SECONDS, then
+      // the right fades up from zero.
+      if (timeSec < SPLIT_SECONDS) {
+        const fadeIn  = clamp(timeSec / FADE_IN_S, 0, 1);
+        const fadeOut = clamp((SPLIT_SECONDS - timeSec) / GUARD_S, 0, 1);
+        leftOp = Math.min(fadeIn, fadeOut);
+      } else {
+        const fadeIn  = clamp((timeSec - SPLIT_SECONDS) / GUARD_S, 0, 1);
+        const fadeOut = clamp((duration - timeSec) / FADE_OUT_TAIL, 0, 1);
+        rightOp = Math.min(fadeIn, fadeOut);
+      }
+    } else {
+      // Desktop: original crossfade — the two overlays live on
+      // opposite sides of the frame, so brief overlap reads as
+      // intentional cinematic blend rather than a layout crash.
+      if (timeSec < SPLIT_SECONDS + CROSSFADE_S / 2) {
+        const fadeIn  = clamp(timeSec / FADE_IN_S, 0, 1);
+        const fadeOut = 1 - clamp(
+          (timeSec - (SPLIT_SECONDS - CROSSFADE_S / 2)) / CROSSFADE_S,
+          0, 1
+        );
+        leftOp = Math.min(fadeIn, fadeOut);
+      }
+
+      if (timeSec > SPLIT_SECONDS - CROSSFADE_S / 2) {
+        const fadeIn  = clamp(
+          (timeSec - (SPLIT_SECONDS - CROSSFADE_S / 2)) / CROSSFADE_S,
+          0, 1
+        );
+        const fadeOut = 1 - clamp(
+          (timeSec - (duration - FADE_OUT_TAIL)) / FADE_OUT_TAIL,
+          0, 1
+        );
+        rightOp = Math.min(fadeIn, fadeOut);
+      }
     }
 
     overlayLeft.style.opacity  = leftOp.toFixed(3);
