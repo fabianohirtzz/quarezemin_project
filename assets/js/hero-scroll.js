@@ -25,11 +25,19 @@ const SPLIT_SECONDS = 7;
 // Mobile therefore uses a SEQUENTIAL fade — left fully vanishes
 // before right starts to appear (governed by GUARD_S) so the two
 // captions are never on screen at the same time.
-const IS_MOBILE     = matchMedia("(max-width: 720px)").matches;
-const CROSSFADE_S   = 1.0;
-const FADE_IN_S     = IS_MOBILE ? 0.4 : 0.6;
-const FADE_OUT_TAIL = IS_MOBILE ? 0.5 : 0.8;
-const GUARD_S       = 0.32;
+//
+// `isMobileNow()` is intentionally re-evaluated inside applyOverlays
+// every frame. iOS Safari sometimes evaluates a module-scope
+// matchMedia before the viewport meta is applied, which produced
+// `IS_MOBILE = false` on real iPhones and routed the page back into
+// the desktop crossfade. Per-frame detection makes that impossible.
+const isMobileNow = () => window.innerWidth <= 720;
+const CROSSFADE_S = 1.0;
+const FADE_IN_S_M = 0.4;
+const FADE_IN_S_D = 0.6;
+const FADE_OUT_M  = 0.5;
+const FADE_OUT_D  = 0.8;
+const GUARD_S     = 0.32;
 
 const track       = document.querySelector(".hero__track");
 const hero        = document.querySelector(".hero");
@@ -88,18 +96,19 @@ function init() {
 
   function applyOverlays(timeSec) {
     let leftOp = 0, rightOp = 0;
+    const mobile = isMobileNow();
 
-    if (IS_MOBILE) {
+    if (mobile) {
       // Mobile: sequential fade. Only one caption is ever on
       // screen — the left fully vanishes by SPLIT_SECONDS, then
       // the right fades up from zero.
       if (timeSec < SPLIT_SECONDS) {
-        const fadeIn  = clamp(timeSec / FADE_IN_S, 0, 1);
+        const fadeIn  = clamp(timeSec / FADE_IN_S_M, 0, 1);
         const fadeOut = clamp((SPLIT_SECONDS - timeSec) / GUARD_S, 0, 1);
         leftOp = Math.min(fadeIn, fadeOut);
       } else {
         const fadeIn  = clamp((timeSec - SPLIT_SECONDS) / GUARD_S, 0, 1);
-        const fadeOut = clamp((duration - timeSec) / FADE_OUT_TAIL, 0, 1);
+        const fadeOut = clamp((duration - timeSec) / FADE_OUT_M, 0, 1);
         rightOp = Math.min(fadeIn, fadeOut);
       }
     } else {
@@ -107,7 +116,7 @@ function init() {
       // opposite sides of the frame, so brief overlap reads as
       // intentional cinematic blend rather than a layout crash.
       if (timeSec < SPLIT_SECONDS + CROSSFADE_S / 2) {
-        const fadeIn  = clamp(timeSec / FADE_IN_S, 0, 1);
+        const fadeIn  = clamp(timeSec / FADE_IN_S_D, 0, 1);
         const fadeOut = 1 - clamp(
           (timeSec - (SPLIT_SECONDS - CROSSFADE_S / 2)) / CROSSFADE_S,
           0, 1
@@ -121,11 +130,20 @@ function init() {
           0, 1
         );
         const fadeOut = 1 - clamp(
-          (timeSec - (duration - FADE_OUT_TAIL)) / FADE_OUT_TAIL,
+          (timeSec - (duration - FADE_OUT_D)) / FADE_OUT_D,
           0, 1
         );
         rightOp = Math.min(fadeIn, fadeOut);
       }
+    }
+
+    // Defensive winner-take-all on mobile — even if some upstream
+    // race condition makes both fades produce opacity > 0 at the
+    // same moment, the lower-opacity overlay is forced off so the
+    // titles can never stack.
+    if (mobile && leftOp > 0 && rightOp > 0) {
+      if (leftOp >= rightOp) rightOp = 0;
+      else                   leftOp  = 0;
     }
 
     overlayLeft.style.opacity  = leftOp.toFixed(3);
