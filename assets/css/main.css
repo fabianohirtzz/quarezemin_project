@@ -2280,51 +2280,67 @@ body:not(.is-loading) [data-reveal="header"] {
     content: "";
     position: absolute;
     left: 0; right: 0; bottom: 0;
-    height: 56vh;
+    height: 64vh;
     z-index: 3;
     pointer-events: none;
     background: linear-gradient(180deg,
       transparent 0%,
-      rgba(8, 6, 5, 0.0) 22%,
-      rgba(8, 6, 5, 0.55) 55%,
-      rgba(8, 6, 5, 0.88) 100%);
+      rgba(8, 6, 5, 0.0) 18%,
+      rgba(8, 6, 5, 0.70) 52%,
+      rgba(8, 6, 5, 0.94) 100%);
   }
 
   /* Both overlays share the same anchor so the JS crossfade
-     keeps them visually consistent; padding and spacing tuned
-     for small screens. */
+     keeps them visually consistent. Right overlay's title is
+     pulled to the bottom so both titles share the same baseline
+     during the crossfade — eyebrows stack above. */
   .hero__overlay {
     position: absolute;
-    left: 18px !important;
-    right: 18px !important;
-    bottom: clamp(110px, 18vh, 160px);
+    left: 20px !important;
+    right: 20px !important;
+    bottom: clamp(124px, 20vh, 172px);
     max-width: none;
     text-align: center;
     z-index: 5;
+    padding: 0 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .hero__overlay--right { text-align: center; }
 
-  .hero__overlay-marker,
-  .hero__overlay-marker--right {
-    margin: 0 auto 12px;
+  /* Right overlay: visually pin the title to the bottom (same
+     baseline as left's title), eyebrows above. The trailing
+     marker in markup is hidden on mobile to keep the silhouette
+     symmetric with the left overlay. */
+  .hero__overlay--right .hero__overlay-title { order: 3; margin-top: 18px; }
+  .hero__overlay--right .hero__overlay-eyebrow:nth-of-type(1) { order: 1; }
+  .hero__overlay--right .hero__overlay-eyebrow:nth-of-type(2) { order: 2; }
+  .hero__overlay-marker--right { display: none; }
+
+  .hero__overlay-marker {
+    margin: 0 auto 18px;
     display: block;
+    width: 44px;
   }
-  .hero__overlay-marker--right { margin: 12px auto 0; }
 
   .hero__overlay-title {
-    margin: 10px 0 0;
-    font-size: clamp(28px, 7.6vw, 42px);
-    line-height: 1.08;
+    margin: 18px 0 0;
+    font-size: clamp(34px, 9.4vw, 52px);
+    line-height: 1.14;
+    letter-spacing: -0.01em;
     text-shadow:
-      0 2px 14px rgba(0, 0, 0, 0.85),
-      0 0 30px rgba(0, 0, 0, 0.7);
+      0 2px 18px rgba(0, 0, 0, 0.92),
+      0 0 40px rgba(0, 0, 0, 0.75);
   }
+
   .hero__overlay-eyebrow {
-    font-size: clamp(15px, 4vw, 19px);
-    line-height: 1.3;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+    font-size: clamp(15px, 4.2vw, 19px);
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
   }
-  .hero__overlay-eyebrow + .hero__overlay-eyebrow { margin-top: 4px; }
+  .hero__overlay-eyebrow + .hero__overlay-eyebrow { margin-top: 6px; }
 
   .hero__status { bottom: 24px; font-size: 9px; gap: 10px; }
   .hero__status-track { width: 80px; }

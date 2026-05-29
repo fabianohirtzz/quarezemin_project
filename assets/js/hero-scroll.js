@@ -19,9 +19,13 @@ import { scroll } from "https://cdn.jsdelivr.net/npm/motion@11/+esm";
 import Lenis      from "https://cdn.jsdelivr.net/npm/lenis@1.1.20/+esm";
 
 const SPLIT_SECONDS = 7;
-const CROSSFADE_S   = 1.0;
-const FADE_IN_S     = 0.6;
-const FADE_OUT_TAIL = 0.8;
+// Tighten the crossfade on small screens — both overlays share the
+// same bottom anchor, so a long crossfade visibly stacks the chapter
+// 01 and 02 titles on top of each other during the transition.
+const IS_MOBILE     = matchMedia("(max-width: 720px)").matches;
+const CROSSFADE_S   = IS_MOBILE ? 0.28 : 1.0;
+const FADE_IN_S     = IS_MOBILE ? 0.4  : 0.6;
+const FADE_OUT_TAIL = IS_MOBILE ? 0.5  : 0.8;
 
 const track       = document.querySelector(".hero__track");
 const hero        = document.querySelector(".hero");
@@ -100,6 +104,14 @@ function init() {
         0, 1
       );
       rightOp = Math.min(fadeIn, fadeOut);
+    }
+
+    // On mobile, raise the visibility floor — anything below ~18%
+    // opacity reads as ghost text crashing into the other overlay,
+    // so snap it to zero instead.
+    if (IS_MOBILE) {
+      if (leftOp  < 0.18) leftOp  = 0;
+      if (rightOp < 0.18) rightOp = 0;
     }
 
     overlayLeft.style.opacity  = leftOp.toFixed(3);
