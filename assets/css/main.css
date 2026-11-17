@@ -4496,6 +4496,7 @@ body:not(.is-loading) [data-reveal="header"] {
   font-style: italic; font-weight: 400;
   font-size: 21px; line-height: 1.45;
   color: var(--creme);
+  padding-right: 34px;
 }
 .avaliacoes__author {
   margin: 20px 0 0;
@@ -4531,7 +4532,7 @@ body:not(.is-loading) [data-reveal="header"] {
   .reels__eyebrow span, .avaliacoes__eyebrow span { width: 22px; }
   .avaliacoes__grid { columns: 1; }
   .avaliacoes__card { padding: 24px 22px 20px; margin-bottom: 14px; }
-  .avaliacoes__card blockquote { font-size: 19px; }
+  .avaliacoes__card blockquote { font-size: 19px; padding-right: 26px; }
   .avaliacoes__score { gap: 14px; padding: 12px 20px 12px 18px; }
   .avaliacoes__score-num { font-size: 42px; }
   .avaliacoes__score-count { font-size: 9.5px; letter-spacing: 0.18em; }
