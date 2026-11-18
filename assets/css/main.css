@@ -4566,7 +4566,7 @@ button.reels__card {
 html.reels-lock, html.reels-lock body { overflow: hidden; }
 
 .reels-modal {
-  position: fixed; inset: 0; z-index: 1000;
+  position: fixed; inset: 0; z-index: 100000;
   display: grid; place-items: center;
   opacity: 0;
   transition: opacity 0.35s var(--ease-out);
