@@ -16,7 +16,7 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="assets/css/main.css?v=20261117b" />
+  <link rel="stylesheet" href="assets/css/main.css?v=20261117c" />
 
   <!-- Preload the all-intra video so scroll-scrub is frame-perfect -->
   <link rel="preload" as="video" href="videos/video_hero_scrub.mp4" type="video/mp4" />
@@ -678,8 +678,8 @@
     <!-- ============================================================
          REELS · Bastidores da cantina
          Horizontal film strip of 9:16 posters. Each card opens the
-         reel on Instagram (age-gated accounts cannot be embedded).
-         The list is curated by the vinícola through the admin panel.
+         self-hosted video in a lightbox player (Instagram blocks
+         embedding for age-gated accounts). Curated via admin panel.
          ============================================================ -->
     <section class="reels" id="reels" aria-labelledby="reels-title">
       <div class="reels__atmosphere" aria-hidden="true">
@@ -705,60 +705,67 @@
       <div class="reels__rail" data-reveal="reels">
         <ul class="reels__track">
           <li class="reels__item">
-            <a class="reels__card" href="https://www.instagram.com/reel/De2k2oMiVbC/" target="_blank" rel="noopener noreferrer">
-              <img src="imagens/reels/De2k2oMiVbC.webp" alt="Merlot Quarezemin servido ao lado da lareira" loading="lazy" />
+            <button class="reels__card" type="button" data-reel-src="videos/reels/para-desacelerar.mp4" data-reel-title="Para desacelerar" aria-label="Assistir: Para desacelerar">
+              <img src="imagens/reels/para-desacelerar.webp" alt="Merlot Quarezemin servido ao lado da lareira" loading="lazy" />
               <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
               <span class="reels__caption">Para desacelerar</span>
-            </a>
+            </button>
           </li>
           <li class="reels__item">
-            <a class="reels__card" href="https://www.instagram.com/reel/Dd1cHCvCxiH/" target="_blank" rel="noopener noreferrer">
-              <img src="imagens/reels/Dd1cHCvCxiH.webp" alt="Garrafas com rótulo personalizado para empresas" loading="lazy" />
+            <button class="reels__card" type="button" data-reel-src="videos/reels/sua-marca-no-rotulo.mp4" data-reel-title="Sua marca no rótulo" aria-label="Assistir: Sua marca no rótulo">
+              <img src="imagens/reels/sua-marca-no-rotulo.webp" alt="Garrafas com rótulo personalizado para empresas" loading="lazy" />
               <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
               <span class="reels__caption">Sua marca no rótulo</span>
-            </a>
+            </button>
           </li>
           <li class="reels__item">
-            <a class="reels__card" href="https://www.instagram.com/reel/DeRxaLoCYOg/" target="_blank" rel="noopener noreferrer">
-              <img src="imagens/reels/DeRxaLoCYOg.webp" alt="Vinhos e espumantes Quarezemin no balde de gelo" loading="lazy" />
-              <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
-              <span class="reels__caption">Gelado, do jeito certo</span>
-            </a>
-          </li>
-          <li class="reels__item">
-            <a class="reels__card" href="https://www.instagram.com/reel/DeAYhbQiyOs/" target="_blank" rel="noopener noreferrer">
-              <img src="imagens/reels/DeAYhbQiyOs.webp" alt="Cabernet Sauvignon Quarezemin sobre rolhas" loading="lazy" />
-              <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
-              <span class="reels__caption">Cabernet Sauvignon</span>
-            </a>
-          </li>
-          <li class="reels__item">
-            <a class="reels__card" href="https://www.instagram.com/reel/DeeVKacC29w/" target="_blank" rel="noopener noreferrer">
-              <img src="imagens/reels/DeeVKacC29w.webp" alt="Visita guiada na cantina em pedra" loading="lazy" />
+            <button class="reels__card" type="button" data-reel-src="videos/reels/dentro-da-cantina.mp4" data-reel-title="Dentro da cantina" aria-label="Assistir: Dentro da cantina">
+              <img src="imagens/reels/dentro-da-cantina.webp" alt="Visita guiada na cantina em pedra" loading="lazy" />
               <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
               <span class="reels__caption">Dentro da cantina</span>
-            </a>
+            </button>
           </li>
           <li class="reels__item">
-            <a class="reels__card" href="https://www.instagram.com/reel/Dejyb4wCX_b/" target="_blank" rel="noopener noreferrer">
-              <img src="imagens/reels/Dejyb4wCX_b.webp" alt="Chopp de vinho Quarezemin sendo servido" loading="lazy" />
+            <button class="reels__card" type="button" data-reel-src="videos/reels/parreirais.mp4" data-reel-title="Os parreirais de Goethe" aria-label="Assistir: Os parreirais de Goethe">
+              <img src="imagens/reels/parreirais.webp" alt="Cachos de uva Goethe nos parreirais" loading="lazy" />
               <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
-              <span class="reels__caption">Chopp de vinho</span>
-            </a>
+              <span class="reels__caption">Os parreirais de Goethe</span>
+            </button>
           </li>
           <li class="reels__item">
-            <a class="reels__card" href="https://www.instagram.com/reel/DfhkYaViT3F/" target="_blank" rel="noopener noreferrer">
-              <img src="imagens/reels/DfhkYaViT3F.webp" alt="Garrafas de Margherita Goethe na adega" loading="lazy" />
+            <button class="reels__card" type="button" data-reel-src="videos/reels/gelado.mp4" data-reel-title="Gelado, do jeito certo" aria-label="Assistir: Gelado, do jeito certo">
+              <img src="imagens/reels/gelado.webp" alt="Espumantes Quarezemin no balde de gelo" loading="lazy" />
               <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
-              <span class="reels__caption">Margherita Goethe</span>
-            </a>
+              <span class="reels__caption">Gelado, do jeito certo</span>
+            </button>
           </li>
           <li class="reels__item">
-            <a class="reels__card" href="https://www.instagram.com/reel/DfH2gxOiaFj/" target="_blank" rel="noopener noreferrer">
-              <img src="imagens/reels/DfH2gxOiaFj.webp" alt="Diplomas e medalhas conquistadas pela vinícola" loading="lazy" />
+            <button class="reels__card" type="button" data-reel-src="videos/reels/suco-de-uva.mp4" data-reel-title="Suco de uva integral" aria-label="Assistir: Suco de uva integral">
+              <img src="imagens/reels/suco-de-uva.webp" alt="Suco de uva integral Quarezemin" loading="lazy" />
               <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
-              <span class="reels__caption">Medalhas na parede</span>
-            </a>
+              <span class="reels__caption">Suco de uva integral</span>
+            </button>
+          </li>
+          <li class="reels__item">
+            <button class="reels__card" type="button" data-reel-src="videos/reels/ceu-de-icara.mp4" data-reel-title="O céu de Içara" aria-label="Assistir: O céu de Içara">
+              <img src="imagens/reels/ceu-de-icara.webp" alt="Céu azul sobre os parreirais em Içara" loading="lazy" />
+              <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+              <span class="reels__caption">O céu de Içara</span>
+            </button>
+          </li>
+          <li class="reels__item">
+            <button class="reels__card" type="button" data-reel-src="videos/reels/sexta-feira.mp4" data-reel-title="Sexta-feira na vinícola" aria-label="Assistir: Sexta-feira na vinícola">
+              <img src="imagens/reels/sexta-feira.webp" alt="Entrada da cantina da vinícola" loading="lazy" />
+              <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+              <span class="reels__caption">Sexta-feira na vinícola</span>
+            </button>
+          </li>
+          <li class="reels__item">
+            <button class="reels__card" type="button" data-reel-src="videos/reels/obrigada.mp4" data-reel-title="Obrigada por confiar" aria-label="Assistir: Obrigada por confiar">
+              <img src="imagens/reels/obrigada.webp" alt="Garrafas na linha de produção da vinícola" loading="lazy" />
+              <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+              <span class="reels__caption">Obrigada por confiar</span>
+            </button>
           </li>
         </ul>
       </div>
@@ -771,6 +778,23 @@
           </svg>
         </a>
       </footer>
+
+      <div class="reels-modal" id="reels-modal" role="dialog" aria-modal="true" aria-label="Vídeo da vinícola" hidden>
+        <div class="reels-modal__backdrop" data-reel-close></div>
+        <figure class="reels-modal__stage">
+          <video class="reels-modal__video" playsinline controls preload="none"></video>
+          <figcaption class="reels-modal__title"></figcaption>
+        </figure>
+        <button class="reels-modal__nav reels-modal__nav--prev" type="button" data-reel-step="-1" aria-label="Vídeo anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="reels-modal__nav reels-modal__nav--next" type="button" data-reel-step="1" aria-label="Próximo vídeo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="reels-modal__close" type="button" data-reel-close aria-label="Fechar vídeo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
     </section>
 
     <!-- ============================================================
@@ -1190,5 +1214,6 @@
   <script src="assets/js/bebidas-carousel.js" defer></script>
   <script src="assets/js/visitas-form.js" defer></script>
   <script src="assets/js/site-chrome.js" defer></script>
+  <script src="assets/js/reels-player.js" defer></script>
 </body>
 </html>
