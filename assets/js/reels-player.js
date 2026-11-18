@@ -11,6 +11,10 @@
   const modal = document.getElementById("reels-modal");
   if (!cards.length || !modal) return;
 
+  /* The section isolates its stacking context; lift the player to <body>
+     so it sits above the fixed header. */
+  document.body.appendChild(modal);
+
   const video = modal.querySelector(".reels-modal__video");
   const title = modal.querySelector(".reels-modal__title");
   let index = 0;
