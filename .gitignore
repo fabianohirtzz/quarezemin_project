@@ -13,3 +13,7 @@ Thumbs.db
 app/config.php
 app/storage/*
 !app/storage/.gitkeep
+
+# Fotos enviadas pelo painel
+uploads/eventos/*
+!uploads/eventos/.gitkeep

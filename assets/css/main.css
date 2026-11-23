@@ -4914,3 +4914,7 @@ html.reels-lock, html.reels-lock body { overflow: hidden; }
 .visitas__status[data-kind="error"] { color: var(--vermelho); font-weight: 500; }
 .visitas__form [aria-invalid="true"] { border-color: rgba(125, 19, 23, 0.7) !important; }
 .visitas__submit:disabled { opacity: 0.6; cursor: progress; }
+
+/* Eventos publicados pelo painel: um único evento fica centralizado */
+.eventos-feature__wrap--solo { grid-template-columns: minmax(0, 580px); justify-content: center; }
+.eventos-feature[hidden] { display: none; }

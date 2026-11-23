@@ -101,6 +101,20 @@ function migrate(PDO $pdo): void
             motivo VARCHAR(120) NULL,
             criado_em DATETIME NOT NULL
         )$tail",
+        "CREATE TABLE IF NOT EXISTS eventos (
+            id $id,
+            titulo VARCHAR(120) NOT NULL,
+            linha VARCHAR(80) NULL,
+            data DATE NOT NULL,
+            horario VARCHAR(20) NULL,
+            local VARCHAR(80) NULL,
+            info VARCHAR(60) NULL,
+            descricao TEXT NOT NULL,
+            foto VARCHAR(200) NULL,
+            publicado TINYINT NOT NULL DEFAULT 1,
+            criado_em DATETIME NOT NULL,
+            atualizado_em DATETIME NOT NULL
+        )$tail",
         "CREATE TABLE IF NOT EXISTS ajustes (
             chave VARCHAR(60) NOT NULL PRIMARY KEY,
             valor TEXT NOT NULL
