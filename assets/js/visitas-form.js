@@ -60,26 +60,26 @@
         lines = [
           "Olá! Quero agendar uma *visita* à Vinícola Quarezemin:",
           "",
-          `*Nome:* ${data.nome || "—"}`,
-          `*WhatsApp:* ${data.whatsapp || "—"}`,
-          `*E-mail:* ${data.email || "—"}`,
-          `*Experiência:* ${labelFor(form, "experiencia") || "—"}`,
-          `*Pessoas:* ${data.pessoas || "—"}`,
-          `*Data:* ${formatDate(data.data) || "—"}`,
-          `*Horário:* ${labelFor(form, "horario") || "—"}`,
+          `*Nome:* ${data.nome || "-"}`,
+          `*WhatsApp:* ${data.whatsapp || "-"}`,
+          `*E-mail:* ${data.email || "-"}`,
+          `*Experiência:* ${labelFor(form, "experiencia") || "-"}`,
+          `*Pessoas:* ${data.pessoas || "-"}`,
+          `*Data:* ${formatDate(data.data) || "-"}`,
+          `*Horário:* ${labelFor(form, "horario") || "-"}`,
           data.observacoes ? `*Observações:* ${data.observacoes}` : null,
         ];
       } else {
         lines = [
           "Olá! Gostaria de uma *proposta para evento* na Vinícola Quarezemin:",
           "",
-          `*Organizador:* ${data.nome || "—"}`,
-          `*WhatsApp:* ${data.whatsapp || "—"}`,
-          `*E-mail:* ${data.email || "—"}`,
-          `*Tipo:* ${labelFor(form, "tipo") || "—"}`,
-          `*Convidados:* ${data.convidados || "—"}`,
-          `*Data desejada:* ${formatDate(data.data) || "—"}`,
-          `*Descrição:* ${data.descricao || "—"}`,
+          `*Organizador:* ${data.nome || "-"}`,
+          `*WhatsApp:* ${data.whatsapp || "-"}`,
+          `*E-mail:* ${data.email || "-"}`,
+          `*Tipo:* ${labelFor(form, "tipo") || "-"}`,
+          `*Convidados:* ${data.convidados || "-"}`,
+          `*Data desejada:* ${formatDate(data.data) || "-"}`,
+          `*Descrição:* ${data.descricao || "-"}`,
         ];
       }
 

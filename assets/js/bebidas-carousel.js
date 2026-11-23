@@ -11,30 +11,35 @@
 const PRODUCTS = [
   {
     name: "Margherita Branco Seco",
+    href: "produto-margherita-branco-seco.html",
     line: "Linha Margherita · Goethe 100%",
     desc: "Mel, flores brancas e toque mineral. Homenagem à mãe do fundador.",
-    meta: "750ml · 11.5% · IP Vales da Uva Goethe",
+    meta: "750ml · 11,5% · IP Vales da Uva Goethe",
   },
   {
     name: "Margherita Demi-Sec",
+    href: "produto-margherita-demi-sec.html",
     line: "Linha Margherita · Goethe 100%",
     desc: "Mesmo perfil floral elegante, com dulçor residual que amplia a maciez.",
-    meta: "750ml · 11.5%",
+    meta: "750ml · 11,5%",
   },
   {
     name: "Branco Seco Goethe",
+    href: "produto-branco-seco-goethe.html",
     line: "Linha Mesa · Goethe / Niágara",
     desc: "Fermentado com as cascas pelo método tradicional do século XX.",
-    meta: "750ml · 12.5%",
+    meta: "750ml · 11,5%",
   },
   {
     name: "Branco Suave Goethe",
+    href: "produto-branco-suave-goethe.html",
     line: "Linha Mesa · Goethe / Niágara",
-    desc: "Aroma intenso e frutado com dulçor equilibrado — versátil e fresco.",
-    meta: "750ml · 12.5%",
+    desc: "Aroma intenso e frutado com dulçor equilibrado, versátil e fresco.",
+    meta: "750ml · 11,5%",
   },
   {
     name: "Rosé Goethe",
+    href: "produto-rose-goethe.html",
     line: "Linha Goethe · 100% Goethe",
     desc: "Morango, framboesa e pêssego. Demi-sec premiado, fácil de amar.",
     meta: "750ml · 11% · IP Vales da Uva Goethe",
@@ -42,42 +47,49 @@ const PRODUCTS = [
   },
   {
     name: "Tinto Seco Bordô",
+    href: "produto-tinto-seco-bordo.html",
     line: "Linha Mesa · Bordô",
     desc: "Vermelho vivo a violeta intenso, frutas vermelhas maduras, aveludado.",
-    meta: "750ml · 11.8%",
+    meta: "750ml · 11,5%",
   },
   {
     name: "Tinto Suave Bordô",
+    href: "produto-tinto-suave-bordo.html",
     line: "Linha Mesa · Bordô",
-    desc: "Bordô com dulçor que agrega complexidade — o coringa da mesa italiana.",
-    meta: "750ml · 11.8%",
+    desc: "Bordô com dulçor que agrega complexidade, o coringa da mesa italiana.",
+    meta: "750ml · 11,5%",
   },
   {
     name: "Cabernet Sauvignon",
+    href: "produto-cabernet-sauvignon.html",
     line: "Linha Fino · 100% Cabernet",
     desc: "Tânico, final longo e elegante, leve evolução em madeira de carvalho.",
     meta: "750ml · 12%",
   },
   {
     name: "Merlot",
+    href: "produto-merlot.html",
     line: "Linha Fino · 100% Merlot",
     desc: "Taninos macios, ameixa e mirtilo. Elegância e potência em equilíbrio.",
-    meta: "750ml · 12.5%",
+    meta: "750ml · 12,5%",
   },
   {
     name: "Espumante Moscatel Branco",
+    href: "produto-espumante-moscatel-branco.html",
     line: "Linha Espumante · Moscatel",
     desc: "Borbulhas finas, flores brancas e mel. Para celebrar cada momento.",
-    meta: "750ml · 7.5%",
+    meta: "750ml · 7,5%",
   },
   {
     name: "Espumante Moscatel Rosé",
+    href: "produto-espumante-moscatel-rose.html",
     line: "Linha Espumante · Moscatel",
     desc: "Cereja, morango e cítricos. Cremoso, acidez equilibrada, brinde perfeito.",
-    meta: "750ml · 7.5%",
+    meta: "750ml · 7,5%",
   },
   {
     name: "Suco de Uva Integral",
+    href: "produto-suco-uva-integral.html",
     line: "Suco · Isabel / Bordô",
     desc: "Frutos vermelhos maduros, sem álcool, sem adição de açúcar.",
     meta: "1L · sem álcool",
@@ -95,6 +107,7 @@ const elDesc      = document.getElementById("bebidas-desc");
 const elMeta      = document.getElementById("bebidas-meta");
 const elPrize     = document.getElementById("bebidas-prize");
 const elPrizeLbl  = document.getElementById("bebidas-prize-label");
+const elCta       = document.getElementById("bebidas-cta");
 const prevBtn     = document.querySelector(".bebidas__arrow--prev");
 const nextBtn     = document.querySelector(".bebidas__arrow--next");
 
@@ -174,6 +187,7 @@ function initCarousel() {
       elLine.textContent = data.line;
       elDesc.textContent = data.desc;
       elMeta.textContent = data.meta;
+      if (elCta && data.href) elCta.href = data.href;
       if (data.prize) {
         elPrizeLbl.textContent = data.prize;
         elPrize.hidden = false;
