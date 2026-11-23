@@ -4868,3 +4868,11 @@ html.reels-lock, html.reels-lock body { overflow: hidden; }
 @media (max-width: 900px) {
   .site-footer__map { max-width: 300px; opacity: 0.6; }
 }
+/* Mapa do rodapé um pouco maior */
+@media (min-width: 901px) {
+  .site-footer__map { height: min(50vh, 560px); }
+}
+@media (min-width: 901px) and (max-height: 800px) {
+  .site-footer__map { height: min(44vh, 360px); }
+}
+.site-footer__bottom, .site-footer__grid { width: 100%; box-sizing: border-box; }
