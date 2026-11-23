@@ -4686,3 +4686,69 @@ html.reels-lock, html.reels-lock body { overflow: hidden; }
   .bebidas-grid__wrap--related { grid-template-columns: repeat(2, 1fr); }
   .bebidas-grid__wrap--related .bebida-card:nth-child(3) { display: none; }
 }
+
+/* ============================================================
+   Assinatura Freela In Home · taça que se enche ao entrar na tela
+   ============================================================ */
+.credit-sig {
+  display: inline-flex; align-items: center; gap: 12px;
+  color: inherit; text-decoration: none;
+}
+.credit-sig__glass {
+  position: relative;
+  width: 22px; height: 29px; flex: none;
+  transform-origin: 50% 85%;
+  transition: transform 0.6s cubic-bezier(0.34, 1.5, 0.6, 1);
+}
+.credit-sig__glass::after {           /* halo de vinho atrás da taça */
+  content: ""; position: absolute; inset: -6px -8px 4px;
+  background: radial-gradient(circle at 50% 35%, rgba(125,19,23,0.55), transparent 65%);
+  filter: blur(8px); opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+  z-index: -1;
+}
+.credit-sig__glass svg { width: 100%; height: 100%; overflow: visible; }
+.credit-sig__line {
+  fill: none; stroke: var(--dourado); stroke-width: 1.1;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.credit-sig__wine { fill: #8e1a22; }
+.credit-sig__fill {
+  transform: translateY(11px);          /* taça vazia */
+  transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+}
+.credit-sig.is-filled .credit-sig__fill { transform: translateY(0); }
+.credit-sig__wine { animation: credit-sig-wave 3.2s linear infinite; }
+@keyframes credit-sig-wave { to { transform: translateX(12px); } }
+.credit-sig__spark {
+  fill: var(--dourado-soft); opacity: 0;
+  transform-origin: 17.6px 4.8px;
+}
+.credit-sig.is-filled .credit-sig__spark { animation: credit-sig-spark 4.5s ease-in-out 2s infinite; }
+@keyframes credit-sig-spark {
+  0%, 70%, 100% { opacity: 0; transform: scale(0.4); }
+  80% { opacity: 1; transform: scale(1.4); }
+  90% { opacity: 0.3; transform: scale(0.8); }
+}
+.credit-sig__brand {
+  font-weight: 600; color: var(--creme);
+  background-image: linear-gradient(var(--dourado), var(--dourado));
+  background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size 0.5s var(--ease-out), color 0.3s;
+}
+.credit-sig:hover .credit-sig__glass,
+.credit-sig:focus-visible .credit-sig__glass { transform: rotate(-14deg) translateY(-2px); }
+.credit-sig:hover .credit-sig__glass::after,
+.credit-sig:focus-visible .credit-sig__glass::after { opacity: 1; }
+.credit-sig:hover .credit-sig__brand,
+.credit-sig:focus-visible .credit-sig__brand { background-size: 100% 1px; color: var(--dourado-soft); }
+.credit-sig__brand { white-space: nowrap; }
+@media (max-width: 640px) {
+  .site-footer__credit { width: 100%; display: flex; justify-content: center; }
+  .credit-sig { gap: 10px; text-align: left; max-width: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .credit-sig__fill { transform: none; transition: none; }
+  .credit-sig__wine, .credit-sig.is-filled .credit-sig__spark { animation: none; }
+}

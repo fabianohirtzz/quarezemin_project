@@ -64,3 +64,16 @@
     revealEls.forEach((el) => el.classList.add("is-revealed"));
   }
 })();
+
+// Assinatura Freela In Home: a taça se enche quando o rodapé entra na tela
+(function () {
+  const sig = document.querySelector(".credit-sig");
+  if (!sig) return;
+  if (!("IntersectionObserver" in window)) { sig.classList.add("is-filled"); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { sig.classList.add("is-filled"); io.disconnect(); }
+    });
+  }, { threshold: 0.6 });
+  io.observe(sig);
+})();
