@@ -97,7 +97,7 @@
               <div class="visitas__tab-highlight" aria-hidden="true"></div>
             </nav>
             <div class="visitas__forms">
-              <form class="visitas__form is-active" id="form-visitas" data-form="visitas" role="tabpanel" aria-labelledby="tab-visitas">
+              <form class="visitas__form is-active" id="form-visitas" data-form="visitas" action="api/agendamento.php" novalidate role="tabpanel" aria-labelledby="tab-visitas">
                 <div class="visitas__form-row"><label class="visitas__field"><span class="visitas__field-label">Nome completo</span><input type="text" name="nome" placeholder="Como devemos te chamar?" required /></label></div>
                 <div class="visitas__form-row visitas__form-row--two">
                   <label class="visitas__field"><span class="visitas__field-label">WhatsApp</span><input type="tel" name="whatsapp" placeholder="(00) 0 0000-0000" required /></label>
@@ -114,7 +114,7 @@
                   <label class="visitas__field"><span class="visitas__field-label">Pessoas (máx. 30)</span><input type="number" name="pessoas" min="1" max="30" placeholder="Ex. 8" required /></label>
                 </div>
                 <div class="visitas__form-row visitas__form-row--two">
-                  <label class="visitas__field"><span class="visitas__field-label">Data desejada</span><input type="date" name="data" required /></label>
+                  <label class="visitas__field"><span class="visitas__field-label">Data desejada</span><input type="date" name="data" required /><span class="visitas__hint" data-hint="data"></span></label>
                   <label class="visitas__field"><span class="visitas__field-label">Horário</span><select name="horario" required>
                     <option value="">Selecione…</option>
                     <option value="manha">Manhã (9h às 12h)</option>
@@ -122,12 +122,14 @@
                   </select></label>
                 </div>
                 <div class="visitas__form-row"><label class="visitas__field"><span class="visitas__field-label">Observações (opcional)</span><textarea name="observacoes" rows="3" placeholder="Restrições alimentares, ocasião, acessibilidade…"></textarea></label></div>
+                <div class="visitas__trap" aria-hidden="true"><label>Deixe em branco<input type="text" name="site" tabindex="-1" autocomplete="off" /></label></div>
                 <div class="visitas__form-foot">
                   <button type="submit" class="visitas__submit"><span>Confirmar visita</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-                  <p class="visitas__form-note">Confirmação via WhatsApp em até 24h.</p>
+                  <p class="visitas__form-note">Você recebe a confirmação por e-mail em até 24h.</p>
                 </div>
+                <p class="visitas__status" role="status" aria-live="polite"></p>
               </form>
-              <form class="visitas__form" id="form-eventos" data-form="eventos" role="tabpanel" aria-labelledby="tab-eventos" hidden>
+              <form class="visitas__form" id="form-eventos" data-form="eventos" action="api/agendamento.php" novalidate role="tabpanel" aria-labelledby="tab-eventos" hidden>
                 <div class="visitas__form-row"><label class="visitas__field"><span class="visitas__field-label">Nome do organizador</span><input type="text" name="nome" placeholder="Seu nome completo" required /></label></div>
                 <div class="visitas__form-row visitas__form-row--two">
                   <label class="visitas__field"><span class="visitas__field-label">WhatsApp</span><input type="tel" name="whatsapp" placeholder="(00) 0 0000-0000" required /></label>
@@ -147,10 +149,12 @@
                 </div>
                 <div class="visitas__form-row"><label class="visitas__field"><span class="visitas__field-label">Data desejada</span><input type="date" name="data" required /></label></div>
                 <div class="visitas__form-row"><label class="visitas__field"><span class="visitas__field-label">Descrição</span><textarea name="descricao" rows="4" placeholder="Tema, necessidades, serviços desejados…" required></textarea></label></div>
+                <div class="visitas__trap" aria-hidden="true"><label>Deixe em branco<input type="text" name="site" tabindex="-1" autocomplete="off" /></label></div>
                 <div class="visitas__form-foot">
                   <button type="submit" class="visitas__submit"><span>Solicitar proposta</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-                  <p class="visitas__form-note">Resposta personalizada via WhatsApp em até 48h.</p>
+                  <p class="visitas__form-note">Resposta personalizada em até 48h.</p>
                 </div>
+                <p class="visitas__status" role="status" aria-live="polite"></p>
               </form>
             </div>
             <aside class="visitas__aside" aria-hidden="true">

@@ -77,6 +77,34 @@ function migrate(PDO $pdo): void
             criado_em DATETIME NOT NULL,
             atualizado_em DATETIME NOT NULL
         )$tail",
+        "CREATE TABLE IF NOT EXISTS agendamentos (
+            id $id,
+            tipo VARCHAR(10) NOT NULL,
+            nome VARCHAR(120) NOT NULL,
+            whatsapp VARCHAR(20) NOT NULL,
+            email VARCHAR(160) NOT NULL,
+            experiencia VARCHAR(40) NOT NULL,
+            pessoas INT NOT NULL,
+            data DATE NOT NULL,
+            horario VARCHAR(10) NULL,
+            observacoes TEXT NULL,
+            status VARCHAR(12) NOT NULL DEFAULT 'pendente',
+            notas TEXT NULL,
+            confirmado_em DATETIME NULL,
+            criado_em DATETIME NOT NULL,
+            atualizado_em DATETIME NOT NULL
+        )$tail",
+        "CREATE TABLE IF NOT EXISTS bloqueios (
+            id $id,
+            data DATE NOT NULL,
+            turno VARCHAR(10) NOT NULL DEFAULT 'dia',
+            motivo VARCHAR(120) NULL,
+            criado_em DATETIME NOT NULL
+        )$tail",
+        "CREATE TABLE IF NOT EXISTS ajustes (
+            chave VARCHAR(60) NOT NULL PRIMARY KEY,
+            valor TEXT NOT NULL
+        )$tail",
         "CREATE TABLE IF NOT EXISTS tentativas (
             id $id,
             acao VARCHAR(30) NOT NULL,

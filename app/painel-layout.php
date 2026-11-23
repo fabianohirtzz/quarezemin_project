@@ -2,9 +2,12 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/agenda.php';
 
 const PAINEL_MENU = [
     'inicio' => ['Início', 'index.php', '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'],
+    'visitas' => ['Visitas', 'visitas.php', '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>'],
+    'agenda' => ['Datas e lotação', 'agenda.php', '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m14 14-4 4"/><path d="m10 14 4 4"/>'],
     'revendedores' => ['Revendedores', 'revendedores.php', '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'],
 ];
 
@@ -74,4 +77,17 @@ function data_br(?string $dt, bool $hora = true): string
     }
     $t = strtotime($dt);
     return $t ? date($hora ? 'd/m/Y H:i' : 'd/m/Y', $t) : '-';
+}
+
+function badge_status(string $s): string
+{
+    $rotulo = STATUS_AGENDAMENTO[$s] ?? $s;
+    return '<span class="badge badge--' . e($s) . '">' . e($rotulo) . '</span>';
+}
+
+/** Aceita só destinos internos do painel (evita redirecionamento aberto). */
+function voltar_para(?string $url, string $padrao): string
+{
+    $url = (string) $url;
+    return preg_match('/^[a-z-]+\.php(\?[A-Za-z0-9=&%_.-]*)?$/', $url) ? $url : $padrao;
 }

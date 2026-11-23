@@ -4902,3 +4902,15 @@ html.reels-lock, html.reels-lock body { overflow: hidden; }
 @media (max-width: 720px) {
   .revendedor-form .personalize-form__row > .revendedor-form__uf { flex: 1 1 auto; }
 }
+
+/* ===== Visitas: envio para o painel ===== */
+.visitas__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.visitas__hint { display: block; min-height: 1.2em; margin-top: 4px; font-size: 12px; line-height: 1.4; color: rgba(10, 8, 7, 0.55); }
+.visitas__hint[data-kind="ok"] { color: #4f6b2e; }
+.visitas__hint[data-kind="error"] { color: var(--vermelho); }
+.visitas__status { margin: 12px 0 0; min-height: 1.4em; font-size: 13px; line-height: 1.5; color: rgba(10, 8, 7, 0.6); }
+.visitas__status:empty { margin: 0; min-height: 0; }
+.visitas__status[data-kind="ok"] { color: #4f6b2e; font-weight: 500; }
+.visitas__status[data-kind="error"] { color: var(--vermelho); font-weight: 500; }
+.visitas__form [aria-invalid="true"] { border-color: rgba(125, 19, 23, 0.7) !important; }
+.visitas__submit:disabled { opacity: 0.6; cursor: progress; }
