@@ -4876,3 +4876,29 @@ html.reels-lock, html.reels-lock body { overflow: hidden; }
   .site-footer__map { height: min(44vh, 360px); }
 }
 .site-footer__bottom, .site-footer__grid { width: 100%; box-sizing: border-box; }
+
+/* ===== Seja um Revendedor ===== */
+.revendedor-form__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.revendedor-form .personalize-form__row > .revendedor-form__uf { flex: 0 0 120px; }
+.revendedor-form [aria-invalid="true"] {
+  border-color: rgba(201, 80, 80, 0.75) !important;
+}
+.revendedor-form__status {
+  margin: 4px 0 0;
+  min-height: 1.4em;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6b5d52;
+}
+.revendedor-form__status[data-kind="ok"] { color: #4f6b2e; font-weight: 500; }
+.revendedor-form__status[data-kind="error"] { color: var(--vermelho); font-weight: 500; }
+.revendedor-form .personalize-form__submit:disabled { opacity: 0.6; cursor: progress; }
+@media (max-width: 720px) {
+  .revendedor-form .personalize-form__row > .revendedor-form__uf { flex: 1 1 auto; }
+}

@@ -8,3 +8,8 @@ reference/
 .DS_Store
 Thumbs.db
 *.log
+
+# Backend: segredos e dados locais
+app/config.php
+app/storage/*
+!app/storage/.gitkeep
