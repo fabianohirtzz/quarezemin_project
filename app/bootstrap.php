@@ -135,6 +135,27 @@ function migrate(PDO $pdo): void
             ativo TINYINT NOT NULL DEFAULT 1,
             criado_em DATETIME NOT NULL
         )$tail",
+        "CREATE TABLE IF NOT EXISTS produtos (
+            id $id,
+            slug VARCHAR(80) NOT NULL DEFAULT '',
+            nome VARCHAR(80) NOT NULL,
+            linha VARCHAR(40) NOT NULL,
+            estilo VARCHAR(80) NOT NULL DEFAULT '',
+            uva VARCHAR(60) NOT NULL DEFAULT '',
+            volume VARCHAR(20) NOT NULL DEFAULT '',
+            alcool VARCHAR(20) NOT NULL DEFAULT '',
+            servir VARCHAR(20) NOT NULL DEFAULT '',
+            descricao TEXT NOT NULL,
+            premio VARCHAR(100) NOT NULL DEFAULT '',
+            foto VARCHAR(160) NOT NULL DEFAULT '',
+            codigo VARCHAR(20) NOT NULL DEFAULT '',
+            ean VARCHAR(14) NOT NULL DEFAULT '',
+            caixa INT NULL,
+            preco INT NULL,
+            ordem INT NOT NULL DEFAULT 0,
+            ativo TINYINT NOT NULL DEFAULT 1,
+            criado_em DATETIME NOT NULL
+        )$tail",
         "CREATE TABLE IF NOT EXISTS ajustes (
             chave VARCHAR(60) NOT NULL PRIMARY KEY,
             valor TEXT NOT NULL

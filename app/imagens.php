@@ -28,6 +28,11 @@ function salvar_imagem_upload(array $f, string $pasta, int $largura, int $minW, 
     if (!$img) {
         throw new RuntimeException('Formato não aceito. Envie uma imagem em JPG, PNG ou WebP.');
     }
+    // PNG de paleta não vira WebP; e a transparência (garrafas recortadas) precisa sobreviver.
+    if (!imageistruecolor($img)) {
+        imagepalettetotruecolor($img);
+    }
+    imagesavealpha($img, true);
 
     // Fotos de celular vêm deitadas: respeita a orientação gravada no EXIF.
     if ($mime === 'image/jpeg' && function_exists('exif_read_data')) {
@@ -47,6 +52,9 @@ function salvar_imagem_upload(array $f, string $pasta, int $largura, int $minW, 
     if ($w > $largura) {
         $nh = (int) round($h * $largura / $w);
         $novo = imagecreatetruecolor($largura, $nh);
+        imagealphablending($novo, false);
+        imagesavealpha($novo, true);
+        imagefill($novo, 0, 0, imagecolorallocatealpha($novo, 0, 0, 0, 127));
         imagecopyresampled($novo, $img, 0, 0, 0, 0, $largura, $nh, $w, $h);
         imagedestroy($img);
         $img = $novo;

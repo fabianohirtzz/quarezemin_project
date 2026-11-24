@@ -1,0 +1,176 @@
+/*
+ * Catálogo para revendedores em A4. Peça pública: identidade completa do site.
+ * Tudo dentro da folha é medido em cqw (100cqw = 210mm), para tela e PDF ficarem iguais.
+ */
+:root {
+  --pedra: #0a0807;
+  --creme: #f5f0e8;
+  --papel: #f8f3ea;
+  --papel-2: #f1e7d6;
+  --dourado: #c9a050;
+  --ouro-texto: #8f6a24;
+  --vinho: #7d1317;
+  --tinta: #1d1714;
+  --tinta-2: #4a3f38;
+  --tinta-3: #8a7e74;
+  --fio: rgba(201, 160, 80, 0.4);
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px 20px 64px; background: #2b2420; color: var(--tinta); font: 400 14px/1.5 Jost, system-ui, sans-serif; }
+
+/* ---------- Barra de ações (só na tela) ---------- */
+.toolbar, .info { max-width: 794px; margin: 0 auto; font-family: Inter, system-ui, sans-serif; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.toolbar__back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #d9cfc2; text-decoration: none; }
+.toolbar__back:hover { color: #fff; }
+.toolbar svg { width: 18px; height: 18px; }
+.toolbar__btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 22px; border: 0; border-radius: 999px; background: linear-gradient(135deg, #c9a050, #e0bf7a); color: var(--pedra); font: 600 15px/1 Inter, sans-serif; cursor: pointer; box-shadow: 0 6px 18px rgba(201, 160, 80, 0.3); }
+.toolbar__btn:hover { transform: translateY(-1px); }
+.info { margin-bottom: 28px; padding: 14px 18px; border-radius: 12px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: #d9cfc2; font-size: 14px; }
+.info p { margin: 0 0 6px; }
+.info p:last-child { margin: 0; color: #a99d92; }
+.info strong { color: #fff; font-weight: 600; }
+
+/* ---------- Folha A4 ---------- */
+.folha {
+  container-type: inline-size;
+  position: relative; overflow: hidden;
+  width: min(100%, 794px); aspect-ratio: 210 / 297; margin: 0 auto 28px;
+  background: var(--papel); color: var(--tinta);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.folha:not(.folha--capa)::before { content: ''; position: absolute; inset: 3.2cqw; border: 1px solid var(--fio); pointer-events: none; }
+.folha__topo { position: absolute; top: 6.4cqw; left: 9cqw; right: 9cqw; display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.8cqw; border-bottom: 1px solid var(--fio); }
+.folha__topo img { width: 12cqw; display: block; }
+.folha__topo span { font-size: 1.2cqw; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ouro-texto); }
+.folha__pe { position: absolute; bottom: 6cqw; left: 9cqw; right: 9cqw; display: flex; align-items: baseline; justify-content: space-between; font-size: 1.15cqw; letter-spacing: 0.28em; text-transform: uppercase; color: var(--tinta-3); }
+.folha__pe span:last-child { font: italic 400 2.2cqw/1 'Cormorant Garamond', serif; letter-spacing: 0; color: var(--vinho); }
+
+.eyebrow { display: flex; align-items: center; gap: 2cqw; margin: 0 0 1.8cqw; font-size: 1.3cqw; font-weight: 500; letter-spacing: 0.34em; text-transform: uppercase; color: var(--ouro-texto); }
+.eyebrow span { width: 4.6cqw; height: 1px; background: var(--dourado); opacity: 0.8; }
+.eyebrow span:last-child { display: none; }
+.titulo { margin: 0; font: 400 6.6cqw/1.02 'Cormorant Garamond', serif; letter-spacing: -0.01em; color: var(--tinta); }
+.titulo em, .subtitulo em { font-style: italic; color: var(--vinho); }
+.subtitulo { margin: 0 0 1.8cqw; font: 400 3.4cqw/1.1 'Cormorant Garamond', serif; color: var(--tinta); }
+
+/* ---------- Capa ---------- */
+.folha--capa { background: var(--pedra); color: var(--creme); }
+.capa__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; filter: saturate(0.85); }
+.capa__atmosfera {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 40% at 12% 88%, rgba(125, 19, 23, 0.55), transparent 70%),
+    radial-gradient(50% 30% at 88% 10%, rgba(201, 160, 80, 0.2), transparent 70%),
+    linear-gradient(180deg, rgba(10, 8, 7, 0.7) 0%, rgba(10, 8, 7, 0.35) 30%, rgba(10, 8, 7, 0.82) 62%, var(--pedra) 92%);
+}
+.capa__moldura { position: absolute; inset: 4cqw; border: 1px solid rgba(201, 160, 80, 0.45); }
+.capa__rail { position: absolute; left: 5.6cqw; top: 50%; margin: 0; transform: translate(-50%, -50%) rotate(-90deg); white-space: nowrap; padding: 0 1.6cqw; background: transparent; font-size: 1.15cqw; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(201, 160, 80, 0.75); }
+.capa__logo { position: absolute; top: 10cqw; left: 50%; width: 26cqw; transform: translateX(-50%); filter: drop-shadow(0 0.6cqw 2cqw rgba(0, 0, 0, 0.5)); }
+.capa__centro { position: absolute; top: 30cqw; left: 12cqw; right: 12cqw; text-align: center; }
+.eyebrow--claro { justify-content: center; color: var(--dourado); margin-bottom: 3cqw; }
+.eyebrow--claro span:last-child { display: block; }
+.capa__titulo { margin: 0; font: 300 12cqw/0.98 'Cormorant Garamond', serif; letter-spacing: -0.015em; color: var(--creme); }
+.capa__titulo em { font-style: italic; font-weight: 400; color: var(--dourado); }
+.capa__sub { max-width: 56cqw; margin: 3.4cqw auto 0; font-size: 1.95cqw; font-weight: 300; line-height: 1.6; color: rgba(245, 240, 232, 0.78); }
+.capa__garrafas { position: absolute; left: 0; right: 0; bottom: 23cqw; display: flex; justify-content: center; align-items: flex-end; }
+.capa__garrafas::before { content: ''; position: absolute; left: 22cqw; right: 22cqw; bottom: -1.6cqw; height: 6cqw; background: radial-gradient(50% 50% at 50% 50%, rgba(201, 160, 80, 0.32), transparent 70%); }
+.capa__garrafas img { position: relative; width: var(--h); height: var(--h); margin: 0 calc(var(--h) * -0.355); object-fit: contain; filter: drop-shadow(0 2.4cqw 2.6cqw rgba(0, 0, 0, 0.7)); }
+.capa__pe { position: absolute; left: 10cqw; right: 10cqw; bottom: 8.4cqw; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); padding-top: 2.6cqw; border-top: 1px solid rgba(201, 160, 80, 0.4); text-align: center; }
+.capa__pe div + div { border-left: 1px solid rgba(201, 160, 80, 0.25); }
+.capa__pe dt { font-size: 1.1cqw; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; color: var(--dourado); }
+.capa__pe dd { margin: 0.8cqw 0 0; font: 400 2.5cqw/1.2 'Cormorant Garamond', serif; color: var(--creme); }
+
+/* ---------- A cantina ---------- */
+.cantina { position: absolute; top: 17cqw; left: 9cqw; right: 9cqw; display: grid; grid-template-columns: 1fr 1.25fr; gap: 0 5cqw; }
+.cantina__foto { grid-column: 1 / -1; position: relative; margin: 0 0 5cqw; aspect-ratio: 82 / 36; }
+.cantina__foto::after { content: ''; position: absolute; inset: 1.4cqw; border: 1px solid rgba(245, 240, 232, 0.55); pointer-events: none; }
+.cantina__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; display: block; }
+.cantina__cabeca .titulo { font-size: 6cqw; }
+.cantina__texto p { margin: 0; font-size: 1.55cqw; font-weight: 300; line-height: 1.7; color: var(--tinta-2); }
+.cantina__texto .cantina__lede { margin: 0.4cqw 0 1.6cqw; font: italic 400 2.55cqw/1.35 'Cormorant Garamond', serif; color: var(--tinta); }
+.motivos { position: absolute; left: 9cqw; right: 9cqw; bottom: 14cqw; }
+.motivos__lista { list-style: none; margin: 1cqw 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 3.6cqw 6cqw; }
+.motivos__lista li { position: relative; padding: 2.2cqw 0 0 6.2cqw; border-top: 1px solid var(--fio); }
+.motivos__n { position: absolute; left: 0; top: 1.9cqw; font: italic 400 3.2cqw/1 'Cormorant Garamond', serif; color: var(--dourado); }
+.motivos__lista h3 { margin: 0 0 0.8cqw; font: 400 3cqw/1.1 'Cormorant Garamond', serif; color: var(--tinta); }
+.motivos__lista h3 em { font-style: italic; color: var(--vinho); }
+.motivos__lista p { margin: 0; font-size: 1.5cqw; font-weight: 300; line-height: 1.6; color: var(--tinta-2); }
+
+/* ---------- Produtos ---------- */
+.produtos { position: absolute; top: 16.6cqw; bottom: 13cqw; left: 9cqw; right: 9cqw; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2.6cqw; }
+.prod {
+  display: grid; grid-template-columns: 11.5cqw minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; column-gap: 2.4cqw;
+  padding: 2.4cqw 2.4cqw 0; overflow: hidden;
+  background: #fffdf8; border: 1px solid rgba(201, 160, 80, 0.32);
+}
+.prod__garrafa { position: relative; align-self: stretch; min-height: 0; }
+.prod__garrafa::before { content: ''; position: absolute; left: -2cqw; right: -2cqw; bottom: 0; height: 9cqw; background: radial-gradient(50% 45% at 50% 85%, rgba(201, 160, 80, 0.28), transparent 75%); }
+.prod__garrafa img { position: relative; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; filter: drop-shadow(0 1.2cqw 1.2cqw rgba(29, 23, 20, 0.3)); }
+.prod__info { display: flex; flex-direction: column; min-height: 0; padding-top: 0.4cqw; }
+.prod__linha { margin: 0 0 0.8cqw; font-size: 1.05cqw; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ouro-texto); }
+.prod__nome { margin: 0; font: 400 3.3cqw/1.02 'Cormorant Garamond', serif; color: var(--tinta); }
+.prod__nome em { font-style: italic; color: var(--vinho); }
+.prod__estilo { margin: 0.8cqw 0 0; font-size: 1.3cqw; font-weight: 500; color: var(--tinta-2); }
+.prod__desc { margin: 1.4cqw 0 0; font-size: 1.38cqw; font-weight: 300; line-height: 1.55; color: var(--tinta-2); display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+.prod__specs { margin: auto 0 0; padding-top: 1.6cqw; display: grid; grid-template-columns: 1fr 1fr; gap: 1.1cqw 1.6cqw; }
+.prod__specs dt { font-size: 0.95cqw; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--tinta-3); }
+.prod__specs dd { margin: 0.2cqw 0 0; font: 500 1.85cqw/1.15 'Cormorant Garamond', serif; color: var(--tinta); }
+.prod__premio { display: flex; align-items: center; gap: 0.8cqw; margin: 1.4cqw 0 0; font-size: 1.12cqw; font-weight: 500; line-height: 1.3; color: var(--ouro-texto); }
+.prod__premio svg { flex: none; width: 2cqw; height: 2cqw; fill: none; stroke: var(--dourado); stroke-width: 1.6; }
+.prod__cod {
+  grid-column: 1 / -1; margin: 2cqw -2.4cqw 0; padding: 1.5cqw 2.4cqw;
+  display: flex; align-items: flex-end; gap: 2.2cqw;
+  background: var(--papel-2); border-top: 1px solid rgba(201, 160, 80, 0.4);
+}
+.prod__cod dt { font-size: 0.92cqw; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ouro-texto); }
+.prod__cod dd { margin: 0.3cqw 0 0; font-size: 1.42cqw; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--tinta); white-space: nowrap; }
+.prod__preco { margin-left: auto; text-align: right; }
+.prod__preco dd { font: 500 2.5cqw/1 'Cormorant Garamond', serif; color: var(--vinho); }
+
+/* ---------- Tabela de pedidos ---------- */
+.pedido { position: absolute; top: 17cqw; bottom: 12cqw; left: 9cqw; right: 9cqw; display: flex; flex-direction: column; }
+.pedido__nota { margin: 1.4cqw 0 0; font-size: 1.5cqw; font-weight: 300; color: var(--tinta-2); }
+.tabela { width: 100%; margin-top: 3cqw; border-collapse: collapse; font-size: 1.45cqw; }
+.tabela th { padding: 0 1cqw 1.2cqw; text-align: left; font-size: 0.98cqw; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ouro-texto); border-bottom: 1px solid var(--dourado); white-space: nowrap; }
+.tabela td { padding: 1cqw 1cqw; border-bottom: 1px solid rgba(201, 160, 80, 0.25); color: var(--tinta-2); vertical-align: middle; font-variant-numeric: tabular-nums; }
+.tabela th:first-child, .tabela td:first-child { padding-left: 0; }
+.tabela th:last-child, .tabela td:last-child { padding-right: 0; }
+.tabela td strong { display: block; font-weight: 500; color: var(--tinta); }
+.tabela td span { display: block; margin-top: 0.2cqw; font-size: 0.95cqw; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tinta-3); }
+.tabela .num { text-align: right; white-space: nowrap; }
+.tabela__cod { font-weight: 600; color: var(--tinta) !important; white-space: nowrap; }
+.tabela__ean { font-size: 1.3cqw; letter-spacing: 0.02em; }
+
+.fechamento { display: grid; grid-template-columns: 0.85fr 1.4fr; gap: 4cqw; margin-top: auto; padding-top: 3cqw; }
+.condicoes ul { list-style: none; margin: 0; padding: 0; }
+.condicoes li { position: relative; padding: 0 0 1cqw 2.6cqw; font-size: 1.45cqw; font-weight: 300; line-height: 1.55; color: var(--tinta-2); }
+.condicoes li::before { content: ''; position: absolute; left: 0; top: 1.05cqw; width: 1.4cqw; height: 1px; background: var(--dourado); }
+.contato { display: flex; gap: 2.6cqw; align-items: flex-start; padding: 2.6cqw; background: #fffdf8; border: 1px solid rgba(201, 160, 80, 0.4); }
+.contato--largo { grid-column: 1 / -1; }
+.contato__dados { flex: 1; min-width: 0; }
+.contato dl { margin: 0; display: grid; gap: 0.9cqw; }
+.contato dl div { display: grid; grid-template-columns: 8cqw 1fr; align-items: baseline; }
+.contato dt { font-size: 0.95cqw; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ouro-texto); }
+.contato dd { margin: 0; font-size: 1.36cqw; color: var(--tinta); white-space: nowrap; }
+.contato__qr { flex: none; width: 12.5cqw; display: flex; flex-direction: column; align-items: center; gap: 1cqw; text-decoration: none; }
+.contato__qr span { display: block; width: 100%; aspect-ratio: 1; background: #fff; box-shadow: 0 0 0 1px rgba(201, 160, 80, 0.5); }
+.contato__qr svg { display: block; width: 100%; height: 100%; }
+.contato__qr small { font-size: 1.05cqw; line-height: 1.35; text-align: center; letter-spacing: 0.06em; color: var(--tinta-3); }
+.aviso { margin: 3cqw 0 0; padding-top: 1.8cqw; border-top: 1px solid var(--fio); font-size: 1.15cqw; text-align: center; letter-spacing: 0.04em; color: var(--tinta-3); }
+
+/* ---------- Impressão / PDF ---------- */
+@media print {
+  @page { size: A4 portrait; margin: 0; }
+  body { padding: 0; background: #fff; }
+  .toolbar, .info { display: none; }
+  .folha {
+    width: 210mm; height: 297mm; aspect-ratio: auto; margin: 0; box-shadow: none;
+    break-after: page; page-break-after: always;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .folha:last-child { break-after: auto; page-break-after: auto; }
+}
+@media (max-width: 560px) {
+  body { padding: 16px 10px 40px; }
+  .toolbar__btn { padding: 0 16px; }
+}

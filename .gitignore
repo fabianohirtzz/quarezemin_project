@@ -20,3 +20,5 @@ uploads/eventos/*
 
 uploads/reels/*
 !uploads/reels/.gitkeep
+uploads/produtos/*
+!uploads/produtos/.gitkeep
