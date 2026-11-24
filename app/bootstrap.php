@@ -115,6 +115,17 @@ function migrate(PDO $pdo): void
             criado_em DATETIME NOT NULL,
             atualizado_em DATETIME NOT NULL
         )$tail",
+        "CREATE TABLE IF NOT EXISTS reels (
+            id $id,
+            titulo VARCHAR(80) NOT NULL,
+            instagram VARCHAR(200) NULL,
+            video VARCHAR(200) NULL,
+            capa VARCHAR(200) NULL,
+            descricao_capa VARCHAR(160) NULL,
+            ordem INT NOT NULL DEFAULT 0,
+            ativo TINYINT NOT NULL DEFAULT 1,
+            criado_em DATETIME NOT NULL
+        )$tail",
         "CREATE TABLE IF NOT EXISTS ajustes (
             chave VARCHAR(60) NOT NULL PRIMARY KEY,
             valor TEXT NOT NULL

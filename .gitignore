@@ -17,3 +17,6 @@ app/storage/*
 # Fotos enviadas pelo painel
 uploads/eventos/*
 !uploads/eventos/.gitkeep
+
+uploads/reels/*
+!uploads/reels/.gitkeep
