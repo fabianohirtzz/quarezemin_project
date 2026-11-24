@@ -15,5 +15,6 @@ json_out([
     'nota_valor' => $resumo['nota'],
     'total' => $resumo['total'],
     'link' => $resumo['link_google'],
+    'avaliar' => avaliacoes_link_qr($resumo),
     'avaliacoes' => $lista,
 ]);
