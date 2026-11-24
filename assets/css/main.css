@@ -4944,3 +4944,7 @@ html.reels-lock, html.reels-lock body { overflow: hidden; }
 @media (max-width: 720px) {
   .reels-modal__embed { height: 72vh; }
 }
+
+/* Avaliações vindas do painel */
+.avaliacoes__stars svg.is-off { opacity: 0.22; filter: none; }
+.avaliacoes__grid[hidden] { display: none; }

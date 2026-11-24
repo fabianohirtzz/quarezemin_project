@@ -126,6 +126,15 @@ function migrate(PDO $pdo): void
             ativo TINYINT NOT NULL DEFAULT 1,
             criado_em DATETIME NOT NULL
         )$tail",
+        "CREATE TABLE IF NOT EXISTS avaliacoes (
+            id $id,
+            autor VARCHAR(80) NOT NULL,
+            texto TEXT NOT NULL,
+            estrelas TINYINT NOT NULL DEFAULT 5,
+            ordem INT NOT NULL DEFAULT 0,
+            ativo TINYINT NOT NULL DEFAULT 1,
+            criado_em DATETIME NOT NULL
+        )$tail",
         "CREATE TABLE IF NOT EXISTS ajustes (
             chave VARCHAR(60) NOT NULL PRIMARY KEY,
             valor TEXT NOT NULL
