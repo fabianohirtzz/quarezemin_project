@@ -1,20 +1,20 @@
 /* Lista do dia: papel claro, legível impresso em preto e branco. */
 * { box-sizing: border-box; }
-body { margin: 0; padding: 32px; background: #f5f0e8; color: #1d1714; font: 400 13px/1.45 Jost, system-ui, sans-serif; }
+body { margin: 0; padding: 32px; background: #f5f0e8; color: #1d1714; font: 400 13px/1.45 Inter, system-ui, sans-serif; }
 .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; max-width: 1000px; margin: 0 auto 24px; }
 .toolbar label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #6b5d52; display: flex; gap: 10px; align-items: center; }
 .toolbar input { font: inherit; padding: 8px 10px; border: 1px solid #d8cdbd; border-radius: 8px; background: #fff; }
-.toolbar button { font: 600 11px/1 Jost, sans-serif; letter-spacing: 0.2em; text-transform: uppercase; padding: 12px 22px; border: 0; border-radius: 999px; background: #7d1317; color: #f5f0e8; cursor: pointer; }
+.toolbar button { font: 600 14px/1 Inter, sans-serif; letter-spacing: 0; padding: 12px 22px; border: 0; border-radius: 999px; background: #7d1317; color: #f5f0e8; cursor: pointer; }
 .head, .grupo, .empty, .foot { max-width: 1000px; margin-left: auto; margin-right: auto; }
 .head { display: flex; align-items: center; gap: 24px; padding-bottom: 18px; border-bottom: 2px solid #7d1317; margin-bottom: 22px; }
 .head img { width: 96px; }
 .eyebrow { margin: 0 0 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: #9a7434; }
-h1 { margin: 0; font: 500 30px/1.1 'Cormorant Garamond', serif; }
+h1 { margin: 0; font: 700 24px/1.2 Inter, sans-serif; }
 .total { margin: 0 0 0 auto; text-align: right; color: #6b5d52; }
-.total strong { font: 500 30px/1 'Cormorant Garamond', serif; color: #1d1714; }
+.total strong { font: 700 26px/1 Inter, sans-serif; color: #1d1714; }
 .grupo { margin-bottom: 26px; break-inside: avoid; }
-h2 { margin: 0 0 8px; font: 500 20px/1.2 'Cormorant Garamond', serif; display: flex; justify-content: space-between; align-items: baseline; }
-h2 span { font: 400 12px Jost, sans-serif; color: #6b5d52; }
+h2 { margin: 0 0 8px; font: 600 16px/1.3 Inter, sans-serif; display: flex; justify-content: space-between; align-items: baseline; }
+h2 span { font: 400 12px Inter, sans-serif; color: #6b5d52; }
 table { width: 100%; border-collapse: collapse; background: #fff; }
 th { text-align: left; font-size: 9.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #6b5d52; padding: 8px 10px; border-bottom: 1px solid #1d1714; }
 td { padding: 10px; border-bottom: 1px solid #e3d9ca; vertical-align: top; }

@@ -29,7 +29,7 @@ function painel_header(string $titulo, string $ativo, array $user): void
   <link rel="icon" type="image/png" href="../imagens/logo-quarezemin.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Jost:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/painel.css" />
 </head>
 <body class="painel">
