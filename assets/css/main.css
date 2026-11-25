@@ -5677,3 +5677,6 @@ html.agendar-lock { overflow: hidden; }
 .agendar-modal__head .visitas__eyebrow { color: var(--dourado-soft); }
 .agendar-modal__head .visitas__eyebrow span { background: rgba(201, 160, 80, 0.5); }
 @media (max-width: 640px) { .agendar-modal__head .visitas__eyebrow span { display: none; } }
+
+/* Nossa História: fotos dos capítulos em formato quadrado */
+.historia-full__image--square { aspect-ratio: 1 / 1; }
