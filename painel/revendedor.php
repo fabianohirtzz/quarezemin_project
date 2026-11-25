@@ -41,7 +41,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
 }
 
 $primeiro = explode(' ', trim($r['nome']))[0];
-$msgWhats = "Olá, {$primeiro}! Aqui é da Vinhos Quarezemin. Recebemos a sua ficha de revendedor pelo site e queremos conversar sobre a revenda dos nossos vinhos.";
+$msgWhats = "Olá, {$primeiro}! Aqui é da Vinícola Quarezemin. Recebemos a sua ficha de revendedor pelo site e queremos conversar sobre a revenda dos nossos produtos.";
 
 painel_header($r['empresa'], 'revendedores', $user);
 ?>

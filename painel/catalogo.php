@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-/* Catálogo para revendedores: códigos, EAN, caixa e preço de cada rótulo, e os dados do PDF. */
+/* Catálogo para revendedores: preço e ordem de cada rótulo, e os dados do PDF. Código, EAN e caixa ficam no editor do produto. */
 
 require __DIR__ . '/../app/painel-layout.php';
 require_once __DIR__ . '/../app/catalogo.php';
@@ -51,26 +51,16 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             if (!$id || !is_array($l)) {
                 continue;
             }
-            $codigo = clean_text($l['codigo'] ?? '', 20);
-            $ean = only_digits((string) ($l['ean'] ?? ''));
-            $caixaTxt = only_digits((string) ($l['caixa'] ?? ''));
             $precoTxt = clean_text($l['preco'] ?? '', 20);
             $preco = preco_de_texto($precoTxt);
-            $postados[$id] = ['codigo' => $codigo, 'ean' => $ean, 'caixa' => $caixaTxt, 'preco' => $precoTxt, 'ativo' => !empty($l['ativo'])];
-
-            if ($codigo !== '' && !codigo_valido($codigo)) {
-                $erros[$id] = 'Código: use letras, números, ponto, barra ou hífen (até 20).';
-            } elseif ($ean !== '' && !ean_valido($ean)) {
-                $erros[$id] = 'EAN inválido: confira os números (o último dígito não confere).';
-            } elseif ($caixaTxt !== '' && ((int) $caixaTxt < 1 || (int) $caixaTxt > 99)) {
-                $erros[$id] = 'Unidades por caixa: entre 1 e 99.';
-            } elseif ($preco === false) {
+            $postados[$id] = ['preco' => $precoTxt, 'ativo' => !empty($l['ativo'])];
+            if ($preco === false) {
                 $erros[$id] = 'Preço inválido. Escreva como 45,90.';
             }
-            $novos[$id] = [$codigo, $ean, $caixaTxt === '' ? null : (int) $caixaTxt, $preco === false ? null : $preco, empty($l['ativo']) ? 0 : 1];
+            $novos[$id] = [$preco === false ? null : $preco, empty($l['ativo']) ? 0 : 1];
         }
         if (!$erros) {
-            $up = $pdo->prepare('UPDATE produtos SET codigo = ?, ean = ?, caixa = ?, preco = ?, ativo = ? WHERE id = ?');
+            $up = $pdo->prepare('UPDATE produtos SET preco = ?, ativo = ? WHERE id = ?');
             foreach ($novos as $id => $v) {
                 $up->execute([...$v, $id]);
             }
@@ -90,7 +80,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
 
 $produtos = catalogo_produtos(false);
 $ativos = array_values(array_filter($produtos, fn($p) => $p['ativo']));
-$semCodigo = count(array_filter($ativos, fn($p) => $p['codigo'] === ''));
 $semPreco = count(array_filter($ativos, fn($p) => $p['preco'] === null));
 
 function botao_mover(int $id, int $dir, bool $desativado): string
@@ -119,11 +108,8 @@ painel_header('Catálogo', 'catalogo', $user);
       </div>
     </header>
 
-    <?php if ($semCodigo || ($cfg['mostrar_precos'] && $semPreco)): ?>
-      <p class="notice">
-        <?php if ($semCodigo): ?><?= $semCodigo ?> <?= $semCodigo === 1 ? 'rótulo está' : 'rótulos estão' ?> sem código. <?php endif; ?>
-        <?php if ($cfg['mostrar_precos'] && $semPreco): ?><?= $semPreco ?> sem preço: no PDF, aparecem como "consulte". <?php endif; ?>
-      </p>
+    <?php if ($cfg['mostrar_precos'] && $semPreco): ?>
+      <p class="notice"><?= $semPreco ?> <?= $semPreco === 1 ? 'rótulo está' : 'rótulos estão' ?> sem preço: no PDF, <?= $semPreco === 1 ? 'aparece' : 'aparecem' ?> como "consulte".</p>
     <?php endif; ?>
 
     <?php if ($erros): ?>
@@ -136,13 +122,11 @@ painel_header('Catálogo', 'catalogo', $user);
       <button type="submit" class="sr-only" tabindex="-1" aria-hidden="true">Salvar tabela</button>
       <div class="cat-list" role="list">
         <div class="cat-row cat-row--head" aria-hidden="true">
-          <span></span><span>Produto</span><span>Código</span><span>EAN</span><span>Cx</span><span>Preço revenda</span><span></span>
+          <span>Produto</span><span>Preço de revenda</span><span>No PDF · Editar · Ordem</span>
         </div>
         <?php foreach ($produtos as $i => $p):
             $id = (int) $p['id'];
             $v = $postados[$id] ?? [
-                'codigo' => $p['codigo'], 'ean' => $p['ean'],
-                'caixa' => $p['caixa'] === null ? '' : (string) $p['caixa'],
                 'preco' => preco_br($p['preco'] === null ? null : (int) $p['preco']),
                 'ativo' => (bool) $p['ativo'],
             ];
@@ -154,29 +138,23 @@ painel_header('Catálogo', 'catalogo', $user);
               <strong><?= e($p['nome']) ?></strong>
               <span><?= e($p['linha']) ?><?= $p['volume'] ? ' · ' . e($p['volume']) : '' ?></span>
             </div>
-            <label class="cat-field"><span class="cat-field__label">Código</span>
-              <input type="text" name="p[<?= $id ?>][codigo]" value="<?= e($v['codigo']) ?>" maxlength="20" spellcheck="false" autocomplete="off" /></label>
-            <label class="cat-field"><span class="cat-field__label">EAN</span>
-              <input type="text" name="p[<?= $id ?>][ean]" value="<?= e($v['ean']) ?>" maxlength="14" inputmode="numeric" autocomplete="off" placeholder="789…" /></label>
-            <label class="cat-field cat-field--cx"><span class="cat-field__label">Cx</span>
-              <input type="text" name="p[<?= $id ?>][caixa]" value="<?= e($v['caixa']) ?>" maxlength="2" inputmode="numeric" autocomplete="off" title="Unidades por caixa" /></label>
-            <label class="cat-field cat-field--preco"><span class="cat-field__label">Preço revenda</span>
+            <label class="cat-field cat-field--preco"><span class="cat-field__label">Preço de revenda</span>
               <span class="cat-field__money"><span aria-hidden="true">R$</span><input type="text" name="p[<?= $id ?>][preco]" value="<?= e($v['preco']) ?>" maxlength="12" inputmode="decimal" autocomplete="off" /></span></label>
             <div class="cat-row__actions">
-              <?= botao_mover($id, -1, $i === 0) ?>
-              <?= botao_mover($id, 1, $i === count($produtos) - 1) ?>
               <label class="switch" title="Entra no PDF">
                 <input type="checkbox" name="p[<?= $id ?>][ativo]" value="1"<?= $v['ativo'] ? ' checked' : '' ?> />
                 <span class="switch__ui" aria-hidden="true"></span><span class="sr-only">Mostrar <?= e($p['nome']) ?> no PDF</span>
               </label>
               <a class="btn btn--sm" href="produto.php?id=<?= $id ?>">Editar</a>
+              <?= botao_mover($id, -1, $i === 0) ?>
+              <?= botao_mover($id, 1, $i === count($produtos) - 1) ?>
             </div>
             <?php if ($erro): ?><p class="cat-row__error" role="alert"><?= e($erro) ?></p><?php endif; ?>
           </div>
         <?php endforeach; ?>
       </div>
       <div class="cat-save">
-        <p class="hint">Preço por unidade, para revenda. O EAN é o número embaixo do código de barras do rótulo. As setas e a chave também salvam a tabela.</p>
+        <p class="hint">Preço por unidade, para revenda. Código, EAN, unidades por caixa, foto e descrição ficam em Editar. As setas e a chave também salvam a tabela.</p>
         <button class="btn btn--gold" type="submit">Salvar tabela</button>
       </div>
     </form>

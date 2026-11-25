@@ -122,8 +122,8 @@ $visita = $a['tipo'] === 'visita';
 $primeiro = explode(' ', trim($a['nome']))[0];
 $quando = date('d/m', strtotime($a['data'])) . ($a['horario'] ? ' (' . mb_strtolower(TURNOS_CURTO[$a['horario']]) . ')' : '');
 $msgWhats = $a['status'] === 'confirmada'
-    ? "Olá, {$primeiro}! Aqui é da Vinhos Quarezemin. Sua " . ($visita ? 'visita' : 'data') . " do dia {$quando} está confirmada. Até breve!"
-    : "Olá, {$primeiro}! Aqui é da Vinhos Quarezemin. Recebemos o seu pedido para o dia {$quando}.";
+    ? "Olá, {$primeiro}! Aqui é da Vinícola Quarezemin. Sua " . ($visita ? 'visita' : 'data') . " do dia {$quando} está confirmada. Até breve!"
+    : "Olá, {$primeiro}! Aqui é da Vinícola Quarezemin. Recebemos o seu pedido para o dia {$quando}.";
 $rotulo = $visita ? (EXPERIENCIAS[$a['experiencia']] ?? $a['experiencia']) : (TIPOS_EVENTO[$a['experiencia']] ?? $a['experiencia']);
 
 painel_header($a['nome'], 'visitas', $user);

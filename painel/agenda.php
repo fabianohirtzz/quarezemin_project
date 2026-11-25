@@ -28,6 +28,19 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         flash('Regras da agenda salvas.');
     }
 
+    if ($acao === 'horarios') {
+        $linhas = [];
+        foreach ((array) ($_POST['h'] ?? []) as $l) {
+            $dias = clean_text($l['dias'] ?? '', 40);
+            $horas = clean_text($l['horas'] ?? '', 80);
+            if ($dias !== '' && $horas !== '') {
+                $linhas[] = ['dias' => $dias, 'horas' => $horas];
+            }
+        }
+        salvar_ajuste('horarios_site', $linhas ?: HORARIOS_SITE_PADRAO);
+        flash('Horários do site salvos.');
+    }
+
     if ($acao === 'bloquear') {
         $de = (string) ($_POST['de'] ?? '');
         $ate = (string) ($_POST['ate'] ?? '') ?: $de;
@@ -63,6 +76,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
 }
 
 $cfg = agenda_config();
+$horarios = horarios_site();
+for ($i = count($horarios); $i < 4; $i++) {
+    $horarios[] = ['dias' => '', 'horas' => ''];
+}
 $st = $pdo->prepare('SELECT * FROM bloqueios WHERE data >= ? ORDER BY data, turno');
 $st->execute([date('Y-m-d')]);
 $bloqueios = $st->fetchAll();
@@ -111,6 +128,22 @@ painel_header('Datas e lotação', 'agenda', $user);
       </section>
 
       <div class="stack">
+        <section class="panel">
+          <h2 class="panel__title">Horários de visitação no site</h2>
+          <p class="hint">Aparecem no rodapé de todas as páginas e em Visitas e Eventos. Deixe uma linha em branco para não mostrar.</p>
+          <form method="post" class="form">
+            <?= csrf_field() ?>
+            <input type="hidden" name="acao" value="horarios" />
+            <?php foreach ($horarios as $i => $h): ?>
+              <div class="row">
+                <label class="field"><span class="field__label">Dias</span><input type="text" name="h[<?= $i ?>][dias]" maxlength="40" value="<?= e($h['dias']) ?>" placeholder="Ex.: Seg a Sex" /></label>
+                <label class="field"><span class="field__label">Horário</span><input type="text" name="h[<?= $i ?>][horas]" maxlength="80" value="<?= e($h['horas']) ?>" placeholder="Ex.: 9h às 11h30 e 14h às 18h" /></label>
+              </div>
+            <?php endforeach; ?>
+            <button class="btn" type="submit">Salvar horários</button>
+          </form>
+        </section>
+
         <section class="panel">
           <h2 class="panel__title">Bloquear datas</h2>
           <form method="post" class="form">

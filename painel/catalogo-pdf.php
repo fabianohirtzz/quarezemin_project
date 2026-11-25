@@ -15,6 +15,7 @@ $produtos = catalogo_produtos(true);
 $comPreco = $cfg['mostrar_precos'] && (bool) array_filter($produtos, fn($p) => $p['preco'] !== null);
 $temCaixa = (bool) array_filter($produtos, fn($p) => $p['caixa'] !== null);
 $temEan = (bool) array_filter($produtos, fn($p) => $p['ean'] !== '');
+$temCodigo = (bool) array_filter($produtos, fn($p) => $p['codigo'] !== '');
 
 $meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 $hoje = new DateTimeImmutable('today');
@@ -158,12 +159,14 @@ function pe_folha(int $n): string
                 </dl>
                 <?php if ($p['premio']): ?><p class="prod__premio"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg><?= e($p['premio']) ?></p><?php endif; ?>
               </div>
+              <?php if ($temCodigo || $temEan || $temCaixa || $comPreco): ?>
               <dl class="prod__cod">
-                <div><dt>Código</dt><dd><?= $p['codigo'] !== '' ? e($p['codigo']) : '—' ?></dd></div>
+                <?php if ($temCodigo): ?><div><dt>Código</dt><dd><?= $p['codigo'] !== '' ? e($p['codigo']) : '—' ?></dd></div><?php endif; ?>
                 <?php if ($temEan): ?><div><dt>EAN</dt><dd><?= $p['ean'] !== '' ? e($p['ean']) : '—' ?></dd></div><?php endif; ?>
                 <?php if ($temCaixa): ?><div><dt>Caixa</dt><dd><?= $p['caixa'] !== null ? (int) $p['caixa'] . ' un.' : '—' ?></dd></div><?php endif; ?>
                 <?php if ($comPreco): ?><div class="prod__preco"><dt>Revenda</dt><dd><?= $p['preco'] !== null ? e(preco_br((int) $p['preco'], true)) : 'Consulte' ?></dd></div><?php endif; ?>
               </dl>
+              <?php endif; ?>
             </article>
           <?php endforeach; ?>
         </div>
@@ -183,7 +186,7 @@ function pe_folha(int $n): string
           <?php endif; ?>
           <table class="tabela">
             <thead><tr>
-              <th>Código</th><th>Produto</th><th>Vol.</th>
+              <?php if ($temCodigo): ?><th>Código</th><?php endif; ?><th>Produto</th><th>Vol.</th>
               <?php if ($temCaixa): ?><th class="num">Cx</th><?php endif; ?>
               <?php if ($temEan): ?><th>EAN</th><?php endif; ?>
               <?php if ($comPreco): ?><th class="num">Unidade</th><?php if ($temCaixa): ?><th class="num">Caixa</th><?php endif; ?><?php endif; ?>
@@ -191,7 +194,7 @@ function pe_folha(int $n): string
             <tbody>
               <?php foreach ($linhas as $p): ?>
                 <tr>
-                  <td class="tabela__cod"><?= $p['codigo'] !== '' ? e($p['codigo']) : '—' ?></td>
+                  <?php if ($temCodigo): ?><td class="tabela__cod"><?= $p['codigo'] !== '' ? e($p['codigo']) : '—' ?></td><?php endif; ?>
                   <td><strong><?= e($p['nome']) ?></strong></td>
                   <td><?= e($p['volume']) ?></td>
                   <?php if ($temCaixa): ?><td class="num"><?= $p['caixa'] !== null ? (int) $p['caixa'] : '—' ?></td><?php endif; ?>

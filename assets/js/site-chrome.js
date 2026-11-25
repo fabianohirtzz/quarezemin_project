@@ -36,11 +36,37 @@
 
   // — Active nav state based on current path —
   const path = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-  document.querySelectorAll(".nav-item, .nav-drawer__item").forEach((a) => {
+  document.querySelectorAll(".nav-item, .nav-drawer__item, .nav-dropdown__item").forEach((a) => {
     const href = (a.getAttribute("href") || "").toLowerCase();
     if (!href || href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
     if (href === path) a.classList.add("is-active");
     if (path === "" && href === "index.html") a.classList.add("is-active");
+  });
+
+  // — Submenu "Nossa História": hover no desktop; toque/teclado pela seta —
+  document.querySelectorAll(".nav-group").forEach((group) => {
+    const btn = group.querySelector(".nav-group__toggle");
+    if (!btn) return;
+    const set = (open) => {
+      group.classList.toggle("is-open", open);
+      group.classList.toggle("is-closed", !open);
+      btn.setAttribute("aria-expanded", String(open));
+    };
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      set(!group.classList.contains("is-open"));
+    });
+    group.addEventListener("mouseenter", () => group.classList.remove("is-closed"));
+    group.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { set(false); btn.focus(); }
+    });
+    document.addEventListener("click", (e) => {
+      if (!group.contains(e.target) && group.classList.contains("is-open")) set(false);
+    });
+    // Página do submenu aberta: o item pai também fica marcado
+    if (group.querySelector(".nav-dropdown .is-active")) {
+      group.querySelector(".nav-item--parent")?.classList.add("is-active");
+    }
   });
 
   // — IntersectionObserver reveal —
@@ -76,4 +102,24 @@
     });
   }, { threshold: 0.6 });
   io.observe(sig);
+})();
+
+// Horários de visitação vindos do painel (rodapé e página de visitas).
+// Sem PHP (prévia estática) ficam os horários escritos no HTML.
+(function () {
+  const alvos = document.querySelectorAll("[data-horarios]");
+  if (!alvos.length) return;
+  fetch("api/horarios.php", { headers: { Accept: "application/json" } })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((j) => {
+      if (!j || !j.ok || !Array.isArray(j.horarios) || !j.horarios.length) return;
+      alvos.forEach((el) => {
+        el.replaceChildren(...j.horarios.map((h) => {
+          const s = document.createElement("span");
+          s.textContent = `${h.dias} · ${h.horas}`;
+          return s;
+        }));
+      });
+    })
+    .catch(() => {});
 })();

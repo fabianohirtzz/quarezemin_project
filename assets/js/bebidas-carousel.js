@@ -15,6 +15,7 @@ const PRODUCTS = [
     line: "Linha Margherita · Goethe 100%",
     desc: "Mel, flores brancas e toque mineral. Homenagem à mãe do fundador.",
     meta: "750ml · 11,5% · IP Vales da Uva Goethe",
+    prizes: [{ metal: "prata", ano: "2026", label: "Prata · Brasil Wine Cup 2026" }],
   },
   {
     name: "Margherita Demi-Sec",
@@ -22,6 +23,7 @@ const PRODUCTS = [
     line: "Linha Margherita · Goethe 100%",
     desc: "Mesmo perfil floral elegante, com dulçor residual que amplia a maciez.",
     meta: "750ml · 11,5%",
+    prizes: [{ metal: "bronze", ano: "2026", label: "Bronze · Brasil Wine Cup 2026" }],
   },
   {
     name: "Branco Seco Goethe",
@@ -43,7 +45,10 @@ const PRODUCTS = [
     line: "Linha Goethe · 100% Goethe",
     desc: "Morango, framboesa e pêssego. Demi-sec premiado, fácil de amar.",
     meta: "750ml · 11% · IP Vales da Uva Goethe",
-    prize: "Medalha de Prata · 2024",
+    prizes: [
+      { metal: "bronze", ano: "2026", label: "Bronze · Brasil Wine Cup 2026" },
+      { metal: "prata", ano: "2024", label: "Prata · Vinhos de Mesa 2024" },
+    ],
   },
   {
     name: "Tinto Seco Bordô",
@@ -72,6 +77,7 @@ const PRODUCTS = [
     line: "Linha Fino · 100% Merlot",
     desc: "Taninos macios, ameixa e mirtilo. Elegância e potência em equilíbrio.",
     meta: "750ml · 12,5%",
+    prizes: [{ metal: "prata", ano: "2025", label: "Prata · Brasil Wine Cup 2025" }],
   },
   {
     name: "Espumante Moscatel Branco",
@@ -105,8 +111,8 @@ const elName      = document.getElementById("bebidas-name");
 const elLine      = document.getElementById("bebidas-line");
 const elDesc      = document.getElementById("bebidas-desc");
 const elMeta      = document.getElementById("bebidas-meta");
-const elPrize     = document.getElementById("bebidas-prize");
-const elPrizeLbl  = document.getElementById("bebidas-prize-label");
+const elPrizes    = document.getElementById("bebidas-prizes");
+const MEDAL_SVG   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>';
 const elCta       = document.getElementById("bebidas-cta");
 const prevBtn     = document.querySelector(".bebidas__arrow--prev");
 const nextBtn     = document.querySelector(".bebidas__arrow--next");
@@ -118,6 +124,22 @@ initFluidDropdowns();
 function initCarousel() {
   const allCards = Array.from(track.querySelectorAll(".bebidas__card"));
   let visible = allCards.slice();
+
+  // Selo de medalha nas garrafas premiadas
+  allCards.forEach((card, i) => {
+    const prizes = (PRODUCTS[i] && PRODUCTS[i].prizes) || [];
+    if (!prizes.length) return;
+    const stack = document.createElement("div");
+    stack.className = "bebidas__seals";
+    stack.setAttribute("aria-hidden", "true");
+    prizes.forEach((pr) => {
+      const seal = document.createElement("span");
+      seal.className = `bebidas__seal bebidas__seal--${pr.metal}`;
+      seal.innerHTML = `${MEDAL_SVG}<b>${pr.ano}</b>`;
+      stack.append(seal);
+    });
+    card.append(stack);
+  });
   let active  = 0;
 
   // — Click queueing: never advance more than one card per transition
@@ -188,11 +210,16 @@ function initCarousel() {
       elDesc.textContent = data.desc;
       elMeta.textContent = data.meta;
       if (elCta && data.href) elCta.href = data.href;
-      if (data.prize) {
-        elPrizeLbl.textContent = data.prize;
-        elPrize.hidden = false;
-      } else {
-        elPrize.hidden = true;
+      if (elPrizes) {
+        elPrizes.innerHTML = "";
+        (data.prizes || []).forEach((pr) => {
+          const pill = document.createElement("span");
+          pill.className = `bebidas__info-prize bebidas__info-prize--${pr.metal}`;
+          pill.innerHTML = MEDAL_SVG;
+          pill.append(pr.label);
+          elPrizes.append(pill);
+        });
+        elPrizes.hidden = !(data.prizes || []).length;
       }
       info.classList.remove("is-transitioning");
     }, 170);

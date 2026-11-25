@@ -9,8 +9,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/bootstrap.php';
 
 const TURNOS = [
-    'manha' => 'Manhã (9h às 12h)',
-    'tarde' => 'Tarde (14h às 17h)',
+    'manha' => 'Manhã (9h às 11h30)',
+    'tarde' => 'Tarde (14h às 18h)',
 ];
 const TURNOS_CURTO = ['manha' => 'Manhã', 'tarde' => 'Tarde'];
 
@@ -59,6 +59,19 @@ function salvar_ajuste(string $chave, $valor): void
     $json = json_encode($valor, JSON_UNESCAPED_UNICODE);
     $pdo->prepare('DELETE FROM ajustes WHERE chave = ?')->execute([$chave]);
     $pdo->prepare('INSERT INTO ajustes (chave, valor) VALUES (?, ?)')->execute([$chave, $json]);
+}
+
+/** Linhas de horário mostradas no rodapé e na página de visitas (editáveis no painel). */
+const HORARIOS_SITE_PADRAO = [
+    ['dias' => 'Seg a Sex', 'horas' => '9h às 11h30 e 14h às 18h'],
+    ['dias' => 'Sábado', 'horas' => '9h às 11h30'],
+    ['dias' => 'Domingo', 'horas' => 'mediante agendamento'],
+];
+
+function horarios_site(): array
+{
+    $v = ajuste('horarios_site', HORARIOS_SITE_PADRAO);
+    return is_array($v) ? $v : HORARIOS_SITE_PADRAO;
 }
 
 /** Configuração efetiva da agenda, com os padrões do horário de visitação da cantina. */
@@ -188,8 +201,8 @@ function email_confirmacao(array $a): array
         "Olá, {$primeiro}!",
         '',
         $a['tipo'] === 'visita'
-            ? 'Sua visita à Vinhos Quarezemin está confirmada. Estamos esperando por você na cantina de pedra.'
-            : 'Sua data na Vinhos Quarezemin está confirmada. Em breve falamos dos detalhes do evento.',
+            ? 'Sua visita à Vinícola Quarezemin está confirmada. Estamos esperando por você na cantina de pedra.'
+            : 'Sua data na Vinícola Quarezemin está confirmada. Em breve falamos dos detalhes do evento.',
         '',
         'Data: ' . $quando,
     ];
@@ -209,7 +222,7 @@ function email_confirmacao(array $a): array
         'Até breve,',
         'Família Quarezemin',
     );
-    $assunto = ($a['tipo'] === 'visita' ? 'Visita confirmada' : 'Data confirmada') . ' · Vinhos Quarezemin · ' . date('d/m/Y', strtotime($a['data']));
+    $assunto = ($a['tipo'] === 'visita' ? 'Visita confirmada' : 'Data confirmada') . ' · Vinícola Quarezemin · ' . date('d/m/Y', strtotime($a['data']));
     return [$assunto, implode("\n", $linhas)];
 }
 
@@ -227,7 +240,7 @@ function email_cancelamento(array $a): array
         '',
         'Família Quarezemin',
     ]);
-    return ['Sobre o seu agendamento · Vinhos Quarezemin', $texto];
+    return ['Sobre o seu agendamento · Vinícola Quarezemin', $texto];
 }
 
 /* ---------- Trava da agenda ---------- */
