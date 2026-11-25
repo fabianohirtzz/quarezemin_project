@@ -122,6 +122,7 @@ function migrate(PDO $pdo): void
             video VARCHAR(200) NULL,
             capa VARCHAR(200) NULL,
             descricao_capa VARCHAR(160) NULL,
+            pagina VARCHAR(20) NOT NULL DEFAULT 'home',
             ordem INT NOT NULL DEFAULT 0,
             ativo TINYINT NOT NULL DEFAULT 1,
             criado_em DATETIME NOT NULL
@@ -156,6 +157,22 @@ function migrate(PDO $pdo): void
             ativo TINYINT NOT NULL DEFAULT 1,
             criado_em DATETIME NOT NULL
         )$tail",
+        "CREATE TABLE IF NOT EXISTS rotulos (
+            id $id,
+            nome VARCHAR(120) NOT NULL,
+            whatsapp VARCHAR(20) NOT NULL,
+            email VARCHAR(160) NOT NULL,
+            empresa VARCHAR(160) NULL,
+            produto VARCHAR(80) NOT NULL,
+            quantidade INT NOT NULL,
+            ocasiao VARCHAR(160) NULL,
+            arte VARCHAR(160) NULL,
+            arte_nome VARCHAR(160) NULL,
+            situacao VARCHAR(20) NOT NULL DEFAULT 'novo',
+            notas TEXT NULL,
+            criado_em DATETIME NOT NULL,
+            atualizado_em DATETIME NOT NULL
+        )$tail",
         "CREATE TABLE IF NOT EXISTS ajustes (
             chave VARCHAR(60) NOT NULL PRIMARY KEY,
             valor TEXT NOT NULL
@@ -170,6 +187,25 @@ function migrate(PDO $pdo): void
     foreach ($tables as $sql) {
         $pdo->exec($sql);
     }
+    // Colunas acrescentadas depois que o banco já existia
+    if (!coluna_existe($pdo, 'reels', 'pagina')) {
+        $pdo->exec("ALTER TABLE reels ADD COLUMN pagina VARCHAR(20) NOT NULL DEFAULT 'home'");
+    }
+}
+
+function coluna_existe(PDO $pdo, string $tabela, string $coluna): bool
+{
+    if (db_driver($pdo) === 'sqlite') {
+        foreach ($pdo->query('PRAGMA table_info(' . $tabela . ')') as $c) {
+            if ($c['name'] === $coluna) {
+                return true;
+            }
+        }
+        return false;
+    }
+    $st = $pdo->prepare('SHOW COLUMNS FROM `' . $tabela . '` LIKE ?');
+    $st->execute([$coluna]);
+    return (bool) $st->fetch();
 }
 
 function now(): string

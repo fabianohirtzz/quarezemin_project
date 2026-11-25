@@ -9,6 +9,7 @@ $pdo = db();
 $novos = (int) $pdo->query("SELECT COUNT(*) FROM revendedores WHERE situacao = 'novo'")->fetchColumn();
 $total = (int) $pdo->query('SELECT COUNT(*) FROM revendedores')->fetchColumn();
 $ativos = (int) $pdo->query("SELECT COUNT(*) FROM revendedores WHERE situacao = 'ativo'")->fetchColumn();
+$rotulosNovos = (int) $pdo->query("SELECT COUNT(*) FROM rotulos WHERE situacao = 'novo'")->fetchColumn();
 $hoje = date('Y-m-d');
 $st = $pdo->prepare("SELECT COUNT(*) FROM agendamentos WHERE status = 'pendente' AND data >= ?");
 $st->execute([$hoje]);
@@ -28,6 +29,12 @@ painel_header('Início', 'inicio', $user);
       <p class="eyebrow"><span aria-hidden="true"></span><?= e(data_br(now(), false)) ?><span aria-hidden="true"></span></p>
       <h1 class="title"><em>Olá,</em> <?= e($primeiro) ?></h1>
     </header>
+
+    <?php if ($rotulosNovos): ?>
+      <a class="notice notice--link" href="rotulos.php?situacao=novo">
+        <?= $rotulosNovos ?> <?= $rotulosNovos === 1 ? 'pedido novo de rótulo personalizado esperando' : 'pedidos novos de rótulo personalizado esperando' ?> resposta. Ver pedidos
+      </a>
+    <?php endif; ?>
 
     <section class="stats stats--4" aria-label="Resumo">
       <a class="stat<?= $aguardando ? ' stat--alert' : '' ?>" href="visitas.php">

@@ -10,12 +10,17 @@
 (function () {
   "use strict";
 
-  const section = document.getElementById("reels");
-  const track = section && section.querySelector(".reels__track");
-  const modal = document.getElementById("reels-modal");
-  if (!track || !modal) return;
-
   const PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>';
+  const LUPA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>';
+
+  // Cada galeria é uma <section data-reels="home|personalize"> com o próprio player dentro.
+  document.querySelectorAll("[data-reels]").forEach(montarGaleria);
+
+  function montarGaleria(section) {
+  const track = section.querySelector(".reels__track");
+  const modal = section.querySelector(".reels-modal");
+  if (!track || !modal) return;
+  const pagina = section.dataset.reels || "home";
 
   function cardItem(r) {
     const li = document.createElement("li");
@@ -24,10 +29,12 @@
     b.type = "button";
     b.className = "reels__card" + (r.capa ? "" : " reels__card--sem-capa");
     if (r.video) b.dataset.reelSrc = r.video;
+    if (r.foto) b.dataset.reelFoto = r.foto;
     if (r.embed) b.dataset.reelEmbed = r.embed;
     if (r.instagram) b.dataset.reelIg = r.instagram;
     b.dataset.reelTitle = r.titulo;
-    b.setAttribute("aria-label", "Assistir: " + r.titulo);
+    b.setAttribute("aria-label", (r.foto ? "Ver foto: " : "Assistir: ") + r.titulo);
+    if (r.foto) b.classList.add("reels__card--foto");
     if (r.capa) {
       const img = document.createElement("img");
       img.src = r.capa;
@@ -47,7 +54,7 @@
     const play = document.createElement("span");
     play.className = "reels__play";
     play.setAttribute("aria-hidden", "true");
-    play.innerHTML = PLAY; // ícone fixo
+    play.innerHTML = r.foto ? LUPA : PLAY; // ícone fixo
     const cap = document.createElement("span");
     cap.className = "reels__caption";
     cap.textContent = r.titulo;
@@ -57,7 +64,7 @@
   }
 
   function carregarDoPainel() {
-    return fetch("api/reels.php", { headers: { Accept: "application/json" } })
+    return fetch("api/reels.php?pagina=" + encodeURIComponent(pagina), { headers: { Accept: "application/json" } })
       .then((res) => res.json())
       .then((data) => {
         if (!data || !data.ok || !Array.isArray(data.reels)) return;
@@ -82,6 +89,14 @@
 
     const video = modal.querySelector(".reels-modal__video");
     const embed = modal.querySelector(".reels-modal__embed");
+    let foto = modal.querySelector(".reels-modal__foto");
+    if (!foto) {
+      foto = document.createElement("img");
+      foto.className = "reels-modal__foto";
+      foto.alt = "";
+      foto.hidden = true;
+      video.after(foto);
+    }
     const title = modal.querySelector(".reels-modal__title");
     const igLink = modal.querySelector(".reels-modal__ig");
     let index = 0;
@@ -103,7 +118,17 @@
         if (card.dataset.reelIg) igLink.href = card.dataset.reelIg;
       }
 
-      if (card.dataset.reelSrc) {
+      foto.hidden = true;
+      if (card.dataset.reelFoto) {
+        limparEmbed();
+        video.pause();
+        video.removeAttribute("src");
+        video.hidden = true;
+        const img = card.querySelector("img");
+        foto.src = card.dataset.reelFoto;
+        foto.alt = img ? img.alt : "";
+        foto.hidden = false;
+      } else if (card.dataset.reelSrc) {
         limparEmbed();
         video.hidden = false;
         const poster = card.querySelector("img");
@@ -195,5 +220,6 @@
         card.classList.remove("is-previewing");
       });
     });
+  }
   }
 })();

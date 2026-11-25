@@ -119,6 +119,69 @@
     </section>
 
     <!-- Form section -->
+    <!-- Galeria de rótulos personalizados (vídeos e fotos vêm do painel, aba Reels > Personalize) -->
+    <section class="reels reels--rotulos" id="rotulos-galeria" data-reels="personalize" aria-labelledby="rotulos-galeria-title">
+      <div class="reels__atmosphere" aria-hidden="true">
+        <div class="reels__glow"></div>
+        <div class="reels__vignette"></div>
+      </div>
+
+      <header class="reels__head">
+        <p class="reels__eyebrow">
+          <span aria-hidden="true"></span>
+          Feitos na cantina · para empresas, casamentos e presentes
+          <span aria-hidden="true"></span>
+        </p>
+        <h2 class="reels__title" id="rotulos-galeria-title">
+          <em>Rótulos</em> que já criamos
+        </h2>
+        <p class="reels__sub">
+          Marcas, noivos e famílias que levaram a própria história para a
+          garrafa. Veja como o rótulo personalizado fica pronto.
+        </p>
+      </header>
+
+      <div class="reels__rail" data-reveal="reels">
+        <ul class="reels__track">
+          <li class="reels__item">
+            <button class="reels__card" type="button" data-reel-src="videos/reels/sua-marca-no-rotulo.mp4" data-reel-title="Sua marca no rótulo" aria-label="Assistir: Sua marca no rótulo">
+              <img src="imagens/reels/sua-marca-no-rotulo.webp" alt="Garrafas com rótulo personalizado para empresas" loading="lazy" />
+              <span class="reels__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+              <span class="reels__caption">Sua marca no rótulo</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="reels__foot">
+        <a class="reels__cta" href="https://www.instagram.com/vinhos.quarezemin/" target="_blank" rel="noopener noreferrer">
+          Seguir no Instagram
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </footer>
+
+      <div class="reels-modal" id="reels-modal" role="dialog" aria-modal="true" aria-label="Rótulos personalizados" hidden>
+        <div class="reels-modal__backdrop" data-reel-close></div>
+        <figure class="reels-modal__stage">
+          <video class="reels-modal__video" playsinline controls preload="none"></video>
+          <div class="reels-modal__embed" hidden></div>
+          <figcaption class="reels-modal__title"></figcaption>
+          <a class="reels-modal__ig" href="https://www.instagram.com/vinhos.quarezemin/" target="_blank" rel="noopener noreferrer" hidden>Abrir no Instagram</a>
+        </figure>
+        <button class="reels-modal__nav reels-modal__nav--prev" type="button" data-reel-step="-1" aria-label="Vídeo anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="reels-modal__nav reels-modal__nav--next" type="button" data-reel-step="1" aria-label="Próximo vídeo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="reels-modal__close" type="button" data-reel-close aria-label="Fechar vídeo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </section>
+
     <section class="personalize-form" aria-labelledby="personalize-form-title">
       <div class="personalize-form__bg" aria-hidden="true">
         <img src="imagens/cantina-interior-arco.webp" alt="" />
@@ -146,7 +209,8 @@
           </div>
         </aside>
 
-        <form class="personalize-form__card" id="personalize-form" novalidate>
+        <form class="personalize-form__card" id="personalize-form" action="api/rotulo.php" method="post" enctype="multipart/form-data" novalidate>
+          <div class="hp-field" aria-hidden="true"><label>Não preencha<input type="text" name="site" tabindex="-1" autocomplete="off" /></label></div>
           <div class="personalize-form__field">
             <label class="personalize-form__label" for="pf-nome">Nome completo</label>
             <input type="text" id="pf-nome" name="nome" placeholder="Como devemos te chamar?" required />
@@ -196,7 +260,7 @@
           <div class="personalize-form__upload">
             <span class="personalize-form__label">Sua arte ou logotipo</span>
             <label class="personalize-form__dropzone" id="pf-dropzone">
-              <input type="file" id="pf-file" name="arte" accept=".pdf,.png,image/png,application/pdf" />
+              <input type="file" id="pf-file" name="arte" accept=".pdf,.png,.jpg,.jpeg,image/png,image/jpeg,application/pdf" />
               <span class="personalize-form__dropzone-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -205,7 +269,7 @@
               </span>
               <p class="personalize-form__dropzone-title">Arraste sua arte aqui</p>
               <p class="personalize-form__dropzone-sub">
-                Ou <strong>clique para selecionar</strong> · até 20 MB
+                Ou <strong>clique para selecionar</strong> · até 10 MB
               </p>
               <span class="personalize-form__dropzone-formats">
                 <span class="personalize-form__dropzone-chip">PDF</span>
@@ -228,7 +292,7 @@
               <span>Solicitar orçamento</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </button>
-            <p class="personalize-form__note">Resposta personalizada em até 24h via WhatsApp.</p>
+            <p class="personalize-form__note" id="pf-status" role="status" aria-live="polite">Respondemos em até 24h pelo WhatsApp ou e-mail.</p>
           </div>
         </form>
       </div>
@@ -255,7 +319,7 @@
         <h2 class="site-footer__title"><em>Brinde</em> conosco<br />na cantina de pedra</h2>
         <p class="site-footer__lede">Rod. SC-445, Km 66, entre os parreirais dos Vales da Uva Goethe. Visitas de segunda a sábado e aos domingos com agendamento.</p>
         <div class="site-footer__ctas">
-          <a class="site-footer__cta site-footer__cta--gold" href="visitas-eventos.html">Agendar visita</a>
+          <a class="site-footer__cta site-footer__cta--gold" href="visitas-eventos.html#agendar">Agendar visita</a>
           <a class="site-footer__cta" href="https://maps.google.com/?cid=7729349891538412445" target="_blank" rel="noopener noreferrer">Como chegar</a>
         </div>
       </div>
@@ -323,6 +387,7 @@
   </footer>
 
   <script src="assets/js/site-chrome.js" defer></script>
+  <script src="assets/js/reels-player.js" defer></script>
   <script>
     // Personalize form — dropzone + file preview + drag-over styling
     (() => {
@@ -374,17 +439,58 @@
         preview.classList.remove('is-active');
       });
 
-      // Form submit — handoff to WhatsApp with prefilled message
-      document.getElementById('personalize-form')?.addEventListener('submit', (e) => {
+      // Envio: o pedido vai para o painel (com a arte) e a vinícola recebe um e-mail.
+      // Sem PHP no servidor (prévia estática), cai no WhatsApp com a mensagem pronta.
+      const form = document.getElementById('personalize-form');
+      const status = document.getElementById('pf-status');
+      const btn = form?.querySelector('.personalize-form__submit');
+      const setStatus = (txt, tipo) => {
+        status.textContent = txt;
+        status.dataset.state = tipo || '';
+      };
+      const viaWhatsApp = (f) => {
+        const linhas = [
+          'Olá! Quero personalizar um rótulo Quarezemin.', '',
+          `Nome: ${f.nome.value}`, `Vinho: ${f.vinho.value}`, `Quantidade: ${f.quantidade.value}`,
+          `Ocasião: ${f.ocasiao.value || '-'}`, `Empresa/Evento: ${f.empresa.value || '-'}`, '',
+          'Vou enviar a arte em seguida.',
+        ];
+        window.open(`https://api.whatsapp.com/send?phone=5548999546255&text=${encodeURIComponent(linhas.join(String.fromCharCode(10)))}`, '_blank', 'noopener');
+      };
+      form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const f = e.currentTarget;
-        const nome = f.nome.value || '';
-        const vinho = f.vinho.value || '';
-        const qtd = f.quantidade.value || '';
-        const empresa = f.empresa.value || '';
-        const ocasiao = f.ocasiao.value || '';
-        const msg = `Olá! Quero personalizar um rótulo Quarezemin.%0A%0ANome: ${nome}%0AVinho: ${vinho}%0AQuantidade: ${qtd}%0AOcasião: ${ocasiao}%0AEmpresa/Evento: ${empresa}%0A%0AVou enviar a arte em seguida.`;
-        window.open(`https://api.whatsapp.com/send?phone=5548999546255&text=${msg}`, '_blank', 'noopener');
+        const fone = (f.whatsapp.value || '').replace(/\D/g, '');
+        if (!f.nome.value.trim() || !f.email.value.trim() || !f.vinho.value) {
+          return setStatus('Preencha nome, WhatsApp, e-mail e o vinho escolhido.', 'error');
+        }
+        if (fone.length < 10) return setStatus('Confira o WhatsApp com DDD.', 'error');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())) return setStatus('Confira o e-mail.', 'error');
+        if ((parseInt(f.quantidade.value, 10) || 0) < 36) return setStatus('O pedido mínimo é de 36 unidades.', 'error');
+        const arte = input.files && input.files[0];
+        if (arte && arte.size > 10 * 1024 * 1024) return setStatus('A arte passou de 10 MB. Envie um arquivo menor.', 'error');
+
+        btn.disabled = true;
+        setStatus('Enviando seu pedido...', 'sending');
+        let res;
+        try {
+          res = await fetch(f.getAttribute('action'), { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } });
+        } catch (_) {
+          res = null;
+        }
+        let json = null;
+        try { json = res ? await res.json() : null; } catch (_) { json = null; }
+        btn.disabled = false;
+        if (json && json.ok) {
+          f.reset();
+          preview.classList.remove('is-active');
+          setStatus('Pedido recebido! Vamos responder com o orçamento em até 24h pelo WhatsApp ou e-mail.', 'ok');
+          return;
+        }
+        if (json && json.error) return setStatus(json.error, 'error');
+        // Servidor sem o painel: segue pelo WhatsApp
+        setStatus('Abrimos o WhatsApp com o seu pedido. É só enviar a mensagem e depois mandar a arte por lá.', 'ok');
+        viaWhatsApp(f);
       });
     })();
   </script>

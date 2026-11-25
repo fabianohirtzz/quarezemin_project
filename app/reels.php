@@ -2,12 +2,19 @@
 declare(strict_types=1);
 
 /*
- * Reels da home. Cada reel é um link do Instagram (abre no player oficial) ou um
- * vídeo hospedado no site (os 9 originais). A capa é opcional para links.
+ * Reels do site, separados por página: "home" (Bastidores da cantina) e
+ * "personalize" (vídeos e fotos de rótulos personalizados).
+ * Cada item é um link do Instagram (abre no player oficial), um vídeo hospedado
+ * no site (os originais) ou, na página Personalize, só uma foto.
  */
 
 require_once __DIR__ . '/agenda.php';
 require_once __DIR__ . '/imagens.php';
+
+const REELS_PAGINAS = [
+    'home' => 'Página inicial',
+    'personalize' => 'Personalize seu rótulo',
+];
 
 const REELS_ORIGINAIS = [
     ['Para desacelerar', 'para-desacelerar', 'Merlot Quarezemin servido ao lado da lareira'],
@@ -37,6 +44,22 @@ function reels_semear(): void
     salvar_ajuste('reels_semeados', true);
 }
 
+/** A página Personalize começa com o vídeo de rótulos que já estava no site. */
+function reels_semear_personalize(): void
+{
+    if (ajuste('reels_personalize_semeados', false)) {
+        return;
+    }
+    db()->prepare("INSERT INTO reels (titulo, video, capa, descricao_capa, pagina, ordem, ativo, criado_em) VALUES (?, ?, ?, ?, 'personalize', 10, 1, ?)")
+        ->execute(['Sua marca no rótulo', 'videos/reels/sua-marca-no-rotulo.mp4', 'imagens/reels/sua-marca-no-rotulo.webp', 'Garrafas com rótulo personalizado para empresas', now()]);
+    salvar_ajuste('reels_personalize_semeados', true);
+}
+
+function reels_pagina(?string $p): string
+{
+    return array_key_exists((string) $p, REELS_PAGINAS) ? (string) $p : 'home';
+}
+
 /**
  * Normaliza um link do Instagram. Aceita reel, post e tv, com ou sem www,
  * parâmetros (?igsh=...) e nome de perfil no caminho.
@@ -53,29 +76,38 @@ function instagram_link(string $url): ?array
     return ['url' => $limpo, 'embed' => $limpo . 'embed/'];
 }
 
-function reels_lista(bool $soAtivos): array
+function reels_lista(bool $soAtivos, string $pagina = 'home'): array
 {
     reels_semear();
-    $sql = 'SELECT * FROM reels' . ($soAtivos ? ' WHERE ativo = 1' : '') . ' ORDER BY ordem, id';
-    return db()->query($sql)->fetchAll();
+    reels_semear_personalize();
+    $st = db()->prepare('SELECT * FROM reels WHERE pagina = ?' . ($soAtivos ? ' AND ativo = 1' : '') . ' ORDER BY ordem, id');
+    $st->execute([reels_pagina($pagina)]);
+    return $st->fetchAll();
 }
 
 /** Renumera a ordem de 10 em 10, para mover para cima/baixo sempre funcionar. */
-function reels_renumerar(): void
+function reels_renumerar(string $pagina = 'home'): void
 {
     $pdo = db();
     $up = $pdo->prepare('UPDATE reels SET ordem = ? WHERE id = ?');
-    foreach ($pdo->query('SELECT id FROM reels ORDER BY ordem, id')->fetchAll(PDO::FETCH_COLUMN) as $i => $id) {
+    foreach (reels_ids($pagina) as $i => $id) {
         $up->execute([($i + 1) * 10, $id]);
     }
 }
 
-function reels_mover(int $id, int $direcao): void
+function reels_ids(string $pagina): array
 {
-    reels_renumerar();
+    $st = db()->prepare('SELECT id FROM reels WHERE pagina = ? ORDER BY ordem, id');
+    $st->execute([reels_pagina($pagina)]);
+    return array_map('intval', $st->fetchAll(PDO::FETCH_COLUMN));
+}
+
+function reels_mover(int $id, int $direcao, string $pagina = 'home'): void
+{
+    reels_renumerar($pagina);
     $pdo = db();
-    $ids = $pdo->query('SELECT id FROM reels ORDER BY ordem, id')->fetchAll(PDO::FETCH_COLUMN);
-    $pos = array_search($id, array_map('intval', $ids), true);
+    $ids = reels_ids($pagina);
+    $pos = array_search($id, $ids, true);
     $alvo = $pos === false ? false : $pos + $direcao;
     if ($pos === false || $alvo < 0 || $alvo >= count($ids)) {
         return;
