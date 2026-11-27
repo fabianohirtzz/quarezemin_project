@@ -89,4 +89,14 @@ $texto = implode("\n", [
 // Falha de e-mail não pode perder a ficha: ela já está salva no banco.
 @send_mail((array) config('mail_notify'), 'Novo revendedor: ' . $d['empresa'] . ' (' . $d['cidade'] . '/' . $d['uf'] . ')', $texto);
 
+// Leva a ficha para o CRM Simples. Se falhar, fica marcada no painel para reenviar.
+require_once __DIR__ . '/../app/crm.php';
+if (crm_ativo()) {
+    try {
+        crm_enviar_revendedor($id);
+    } catch (Throwable $t) {
+        error_log('CRM: ' . $t->getMessage());
+    }
+}
+
 json_out(['ok' => true]);

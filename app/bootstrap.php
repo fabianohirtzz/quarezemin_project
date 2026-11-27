@@ -191,6 +191,12 @@ function migrate(PDO $pdo): void
     if (!coluna_existe($pdo, 'reels', 'pagina')) {
         $pdo->exec("ALTER TABLE reels ADD COLUMN pagina VARCHAR(20) NOT NULL DEFAULT 'home'");
     }
+    // Integração com o CRM Simples (app/crm.php)
+    if (!coluna_existe($pdo, 'revendedores', 'crm_id')) {
+        $pdo->exec('ALTER TABLE revendedores ADD COLUMN crm_id VARCHAR(40) NULL');
+        $pdo->exec('ALTER TABLE revendedores ADD COLUMN crm_em DATETIME NULL');
+        $pdo->exec('ALTER TABLE revendedores ADD COLUMN crm_erro VARCHAR(255) NULL');
+    }
 }
 
 function coluna_existe(PDO $pdo, string $tabela, string $coluna): bool

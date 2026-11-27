@@ -32,6 +32,13 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         header('Location: revendedor.php?id=' . $id);
         exit;
     }
+    if ($acao === 'crm') {
+        require_once __DIR__ . '/../app/crm.php';
+        $res = crm_enviar_revendedor($id);
+        flash($res['ok'] ? 'Ficha enviada ao CRM Simples.' : 'Não foi possível enviar ao CRM: ' . $res['msg']);
+        header('Location: revendedor.php?id=' . $id);
+        exit;
+    }
     if ($acao === 'excluir') {
         $pdo->prepare('DELETE FROM revendedores WHERE id = ?')->execute([$id]);
         flash('Ficha de ' . $r['empresa'] . ' excluída.');
@@ -39,6 +46,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         exit;
     }
 }
+
+require_once __DIR__ . '/../app/crm.php';
+$crmAtivo = crm_ativo();
 
 $primeiro = explode(' ', trim($r['nome']))[0];
 $msgWhats = "Olá, {$primeiro}! Aqui é da Vinícola Quarezemin. Recebemos a sua ficha de revendedor pelo site e queremos conversar sobre a revenda dos nossos produtos.";
@@ -99,6 +109,25 @@ painel_header($r['empresa'], 'revendedores', $user);
           <button class="btn btn--gold" type="submit">Salvar</button>
           <p class="hint">Última atualização em <?= e(data_br($r['atualizado_em'])) ?></p>
         </form>
+
+        <h2 class="panel__title" style="margin-top: 28px;">CRM Simples</h2>
+        <?php if (!$crmAtivo): ?>
+          <p class="hint">Integração desligada: falta o token do CRM no arquivo de configuração.</p>
+        <?php else: ?>
+          <?php if (!empty($r['crm_id']) && empty($r['crm_erro'])): ?>
+            <p class="hint">Enviada ao CRM em <?= e(data_br($r['crm_em'])) ?>.</p>
+          <?php elseif (!empty($r['crm_erro'])): ?>
+            <p class="hint">Falhou em <?= e(data_br($r['crm_em'])) ?>: <?= e($r['crm_erro']) ?></p>
+          <?php else: ?>
+            <p class="hint">Ainda não enviada ao CRM.</p>
+          <?php endif; ?>
+          <form method="post">
+            <?= csrf_field() ?>
+            <input type="hidden" name="id" value="<?= (int) $r['id'] ?>" />
+            <input type="hidden" name="acao" value="crm" />
+            <button class="btn" type="submit"><?= !empty($r['crm_id']) ? 'Reenviar ao CRM' : 'Enviar ao CRM' ?></button>
+          </form>
+        <?php endif; ?>
       </section>
     </div>
 

@@ -22,4 +22,10 @@ return [
 
     // true em produção (cookie de sessão só via HTTPS)
     'secure_cookies' => false,
+
+    // CRM Simples: token em Administrador > API > "Seu token de API pessoal".
+    // Vazio = integração desligada. Nunca versione o token.
+    'crm_token'  => '',
+    'crm_fonte'  => 'Site',
+    'crm_status' => '',
 ];
